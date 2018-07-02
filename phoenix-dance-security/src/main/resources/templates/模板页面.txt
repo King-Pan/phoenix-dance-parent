@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="commons/meta_head :: metaHead(title='快速开发平台 | 用户管理')">
+</head>
+<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default m-brand--minimize m-aside-left--minimize">
+<div class="m-grid m-grid--hor m-grid--root m-page">
+    <!--导入header-->
+    <div th:replace="commons/header :: header"></div>
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+        <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+            <i class="la la-close"></i>
+        </button>
+        <!--导入左侧导航-->
+        <div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-dark "
+             th:insert="commons/left_menu :: leftMenu">
+        </div>
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+            <h1>模板页面</h1>
+        </div>
+    </div>
+    <!--导入footer-->
+    <div th:replace="commons/footer :: footer"></div>
+</div>
+
+
+<!--导入左侧工具栏-->
+<div th:replace="commons/move_bar :: moveBar"></div>
+
+<div th:replace="commons/onload_js :: onloadJS"></div>
+</body>
+</html>

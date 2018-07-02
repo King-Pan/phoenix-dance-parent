@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="commons/meta_head :: metaHead(title='快速开发平台 | 个人信息')">
+</head>
+<body  class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default"  >
+<!-- begin:: Page -->
+<div class="m-grid m-grid--hor m-grid--root m-page">
+    <!-- BEGIN: Header -->
+    <!--导入header-->
+    <div th:replace="commons/header :: header"></div>
+    <!-- END: Header -->
+    <!-- begin::Body -->
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+        <!-- BEGIN: Left Aside -->
+        <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+            <i class="la la-close"></i>
+        </button>
+        <!--导入左侧导航-->
+        <div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-dark "
+             th:insert="commons/left_menu :: leftMenu">
+        </div>
+        <!-- END: Aside Menu -->
+        <!-- END: Left Aside -->
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+            <!-- BEGIN: Subheader -->
+            <div class="m-subheader ">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="m-subheader__title ">
+                            我的资料
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <!-- END: Subheader -->
+            <div class="m-content">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="m-portlet m-portlet--full-height  ">
+                            <div class="m-portlet__body">
+                                <div class="m-card-profile">
+                                    <div class="m-card-profile__title m--hide">
+                                        Your Profile
+                                    </div>
+                                    <div class="m-card-profile__pic">
+                                        <div class="m-card-profile__pic-wrapper">
+                                            <img th:src="@{/assets/app/media/img/users/user4.jpg}" alt=""/>
+                                        </div>
+                                    </div>
+                                    <div class="m-card-profile__details">
+                                        <span class="m-card-profile__name" th:text="${session.user.nickName}">
+                                        </span>
+                                        <a href="" class="m-card-profile__email m-link" th:text="${session.user.email}">
+                                        </a>
+                                    </div>
+                                </div>
+                                <ul class="m-nav m-nav--hover-bg m-portlet-fit--sides">
+                                    <li class="m-nav__separator m-nav__separator--fit"></li>
+                                    <li class="m-nav__section m--hide">
+                                        <span class="m-nav__section-text">
+                                            Section
+                                        </span>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a th:href="@{/user/profile}" class="m-nav__link">
+                                            <i class="m-nav__link-icon flaticon-profile-1"></i>
+                                            <span class="m-nav__link-title">
+                                                <span class="m-nav__link-wrap">
+                                                    <span class="m-nav__link-text">
+                                                        我的资料
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a href="../header/profile&amp;demo=default.html" class="m-nav__link">
+                                            <i class="m-nav__link-icon flaticon-share"></i>
+                                            <span class="m-nav__link-text">
+                                                Activity
+                                            </span>
+                                            <span class="m-nav__link-badge">
+                                                <span class="m-badge m-badge--success">
+                                                    2
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-nav__item">
+                                        <a href="../header/profile&amp;demo=default.html" class="m-nav__link">
+                                            <i class="m-nav__link-icon flaticon-chat-1"></i>
+                                            <span class="m-nav__link-text">
+                                                消息中心
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="m-portlet__body-separator"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-8">
+                        <div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-tools">
+                                    <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                                        <li class="nav-item m-tabs__item">
+                                            <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                                                <i class="flaticon-share m--hide"></i>
+                                                账户信息
+                                            </a>
+                                        </li>
+                                        <li class="nav-item m-tabs__item">
+                                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
+                                                未开放1
+                                            </a>
+                                        </li>
+                                        <li class="nav-item m-tabs__item">
+                                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_user_profile_tab_3" role="tab">
+                                                未开放2
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="m_user_profile_tab_1">
+                                    <form class="m-form m-form--fit m-form--label-align-right">
+                                        <div class="m-portlet__body">
+                                            <div class="form-group m-form__group m--margin-top-10 m--hide">
+                                                <div class="alert m-alert m-alert--default" role="alert">
+                                                    The example form below demonstrates common HTML form elements that receive updated styles from Bootstrap with additional classes.
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <div class="col-10 ml-auto">
+                                                    <h3 class="m-form__section">
+                                                        1. 基础信息
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <label for="example-text-input" class="col-2 col-form-label">
+                                                    用户名
+                                                </label>
+                                                <div class="col-7">
+                                                    <input class="form-control m-input" type="text" th:value="${session.user.userName}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <label for="example-text-input" class="col-2 col-form-label">
+                                                    昵称
+                                                </label>
+                                                <div class="col-7">
+                                                    <input class="form-control m-input" type="text" th:value="${session.user.nickName}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <label for="example-text-input" class="col-2 col-form-label">
+                                                    邮箱
+                                                </label>
+                                                <div class="col-7">
+                                                    <input class="form-control m-input" type="text" th:value="${session.user.email}">
+                                                    <span class="m-form__help">
+                                                        邮箱必须正确，否则接受不到邮件
+                                                        <!--If you want your invoices addressed to a company. Leave blank to use your full name.-->
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <label for="example-text-input" class="col-2 col-form-label">
+                                                    电话号码
+                                                </label>
+                                                <div class="col-7">
+                                                    <input class="form-control m-input" type="text" th:value="${session.user.phoneNum}">
+                                                </div>
+                                            </div>
+                                            <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+                                            <div class="form-group m-form__group row">
+                                                <div class="col-10 ml-auto">
+                                                    <h3 class="m-form__section">
+                                                        2. 地址
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <label for="example-text-input" class="col-2 col-form-label">
+                                                    省份
+                                                </label>
+                                                <div class="col-7">
+                                                    <input class="form-control m-input" type="text" value="L-12-20 Vertex, Cybersquare">
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <label for="example-text-input" class="col-2 col-form-label">
+                                                    城市
+                                                </label>
+                                                <div class="col-7">
+                                                    <input class="form-control m-input" type="text" value="San Francisco">
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <label for="example-text-input" class="col-2 col-form-label">
+                                                    区域
+                                                </label>
+                                                <div class="col-7">
+                                                    <input class="form-control m-input" type="text" value="California">
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <label for="example-text-input" class="col-2 col-form-label">
+                                                    门牌号
+                                                </label>
+                                                <div class="col-7">
+                                                    <input class="form-control m-input" type="text" value="45000">
+                                                </div>
+                                            </div>
+                                            <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+                                        </div>
+                                        <div class="m-portlet__foot m-portlet__foot--fit">
+                                            <div class="m-form__actions">
+                                                <div class="row">
+                                                    <div class="col-2"></div>
+                                                    <div class="col-7">
+                                                        <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">
+                                                            保存修改
+                                                        </button>
+                                                        &nbsp;&nbsp;
+                                                        <button type="reset" class="btn btn-secondary m-btn m-btn--air m-btn--custom">
+                                                            取消
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane " id="m_user_profile_tab_2">
+                                    <h1>未开放1</h1>
+                                </div>
+                                <div class="tab-pane " id="m_user_profile_tab_3">
+                                    <h1>未开放2</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end:: Body -->
+    <!-- begin::Footer -->
+    <!--导入footer-->
+    <div th:replace="commons/footer :: footer"></div>
+    <!-- end::Footer -->
+</div>
+<!-- end:: Page -->
+<!-- begin::Quick Sidebar -->
+<div id="m_quick_sidebar" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light">
+    <div class="m-quick-sidebar__content m--hide">
+				<span id="m_quick_sidebar_close" class="m-quick-sidebar__close">
+					<i class="la la-close"></i>
+				</span>
+        <ul id="m_quick_sidebar_tabs" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+            <li class="nav-item m-tabs__item">
+                <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_quick_sidebar_tabs_messenger" role="tab">
+                    Messages
+                </a>
+            </li>
+            <li class="nav-item m-tabs__item">
+                <a class="nav-link m-tabs__link" 		data-toggle="tab" href="#m_quick_sidebar_tabs_settings" role="tab">
+                    Settings
+                </a>
+            </li>
+            <li class="nav-item m-tabs__item">
+                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_quick_sidebar_tabs_logs" role="tab">
+                    Logs
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--导入左侧工具栏-->
+<div th:replace="commons/move_bar :: moveBar"></div>
+<!-- begin::Quick Nav -->
+<!--begin::Base Scripts -->
+<div th:replace="commons/onload_js :: onloadJS"></div>
+<!--end::Base Scripts -->
+</body>
+</html>

@@ -1,0 +1,68 @@
+body {
+    font-size: 12px;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:HOVER {
+    text-decoration: none;
+}
+
+table td {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 250px;
+}
+
+.qry-btn {
+    padding: 5px 8px;
+    border: 1px solid #46b8da;
+    border-radius: 3px;
+    !important;color: #50aa47;
+}
+
+.qry-btn:HOVER {
+    color: #fff;
+    background-color: #5bc0de;
+}
+
+table>thead>tr>th {
+    border-bottom: 1px solid #DDDDDD;
+    background-color: #f5fafe;
+}
+
+.form-control {
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    padding: .65rem 1rem;
+    border: 1px solid #ced4da;
+
+}
+
+.btn {
+    font-size: 12px;
+}
+
+element.style {
+    font-weight: bold;
+    background-color: #f5fafe;
+    border-bottom: solid 1px #eee;
+}
+
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    font-weight: bold;
+    background-color: #f5fafe;
+    border-bottom: solid 1px #eee;
+}
+.panel-body {
+    padding: 15px;
+}
