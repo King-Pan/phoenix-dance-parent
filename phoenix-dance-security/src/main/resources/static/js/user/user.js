@@ -11,7 +11,7 @@ $(function () {
         sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
         pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
         pageSize: 10,                     //每页的记录行数（*）
-        pageList: [10, 20, 25, 50, 100],        //可供选择的每页的行数（*）
+        pageList: [10, 20, 25, 50, 100],        //可供选择的每页的行数（*）,如果总记录数不满足50就不会显示50条
         queryParams: function queryParams(params) {
             var param = {
                 rows: params.limit,
@@ -94,7 +94,83 @@ $(function () {
     $("#infoModal").modal("show");
     console.log($('#infoForm').serializeArray());
     console.log($('#infoForm').serialize());
+    var addOrModifyDiv = '<div style="overflow: auto;">';
+    addOrModifyDiv += '<form class="form-horizontal" id="infoForm">';
+    addOrModifyDiv += '<div class="modal-body" style="width: 100%;overflow-y:auto;">';
+    addOrModifyDiv += '<input type="hidden" id="userId" name="userId" value="">';
+    addOrModifyDiv += '<div class="form-group">';
+    addOrModifyDiv += '<span class="col-sm-3 control-label">用户名</span>';
+    addOrModifyDiv += '<div class="col-sm-8"><input placeholder="" name="userName" id="userName" value="" class="form-control" type="text"></div>';
+    addOrModifyDiv += '</div>';
 
+    addOrModifyDiv += '<div class="form-group">';
+    addOrModifyDiv += '<span class="col-sm-3 control-label">昵称</span>';
+    addOrModifyDiv += '<div class="col-sm-8"><input placeholder="" name="nickName" id="nickName" value="" class="form-control" type="text"></div>';
+    addOrModifyDiv += '</div>';
+
+    addOrModifyDiv += '<div class="form-group">';
+    addOrModifyDiv += '<span class="col-sm-3 control-label">邮箱</span>';
+    addOrModifyDiv += '<div class="col-sm-8"><input placeholder="" name="email" id="email" value="" class="form-control" type="text"></div>';
+    addOrModifyDiv += '</div>';
+
+    addOrModifyDiv += '<div class="form-group">';
+    addOrModifyDiv += '<span class="col-sm-3 control-label">电话</span>';
+    addOrModifyDiv += '<div class="col-sm-8"><input placeholder="" name="phoneNum" id="phoneNum" value="" class="form-control" type="text"></div>';
+    addOrModifyDiv += '</div>';
+    addOrModifyDiv += '</div></div>';
+
+    BootstrapDialog.show({
+        message: function (dialog) {
+            var divStr = '<div style="overflow: auto;">';
+            divStr += '<form class="form-horizontal" id="infoForm">';
+            divStr += '<div class="modal-body" style="width: 100%;overflow-y:auto;">';
+            divStr += '<input type="hidden" id="userId" name="userId" value="">';
+            //用户名
+            divStr += '<div class="form-group">';
+            divStr += '<span class="col-sm-3 control-label">用户名</span>';
+            divStr += '<div class="col-sm-8"><input placeholder="" name="userName" id="userName" value="" class="form-control" type="text"></div>';
+            divStr += '</div>';
+            //昵称
+            divStr += '<div class="form-group">';
+            divStr += '<span class="col-sm-3 control-label">昵称</span>';
+            divStr += '<div class="col-sm-8"><input placeholder="" name="nickName" id="nickName" value="" class="form-control" type="text"></div>';
+            divStr += '</div>';
+            //邮箱
+            divStr += '<div class="form-group">';
+            divStr += '<span class="col-sm-3 control-label">邮箱</span>';
+            divStr += '<div class="col-sm-8"><input placeholder="" name="email" id="email" value="" class="form-control" type="text"></div>';
+            divStr += '</div>';
+            //电话
+            divStr += '<div class="form-group">';
+            divStr += '<span class="col-sm-3 control-label">电话</span>';
+            divStr += '<div class="col-sm-8"><input placeholder="" name="phoneNum" id="phoneNum" value="" class="form-control" type="text"></div>';
+            divStr += '</div>';
+            divStr += '</div></div>';
+            var $content = $(divStr);
+
+            return $content;
+        },
+        title: '添加用户',
+        buttons: [{
+            label: '关闭',
+            action: function (dialogRef) {
+                dialogRef.close();
+            }
+        }, {
+            label: '保存',
+            action: function (dialog) {
+                var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
+                $button.disable();
+                $button.spin();
+                dialog.setClosable(false);
+            }
+        }],
+        onshow: function () {
+            //延迟校验
+            setInterval(validatorUser, 1500);
+        }
+    });
+    validatorUser();
 });
 
 var overAllIds = new Set();                // 全局保存选中行的对象
@@ -116,7 +192,7 @@ $('#userTable').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-a
     examine(e.type, datas);                              // 保存到全局 Array() 里
 });
 
-$(document).ready(function () {
+function validatorUser() {
     $('#infoForm').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
@@ -188,6 +264,10 @@ $(document).ready(function () {
             }
         }
     });
+}
+
+$(document).ready(function () {
+
 });
 
 

@@ -3,166 +3,79 @@
 <head th:replace="commons/meta_head :: metaHead(title='快速开发平台 | 用户管理')">
 </head>
 <body>
-<div class="panel-body" style="padding-bottom:0px;">
-    <!--查询区域 begin-->
-    <div class="panel " style="margin-bottom:0px; border: solid 1px #eee;">
-        <div class="panel-heading" style="font-weight: bold; background-color: #f5fafe; border-bottom: solid 1px #eee;">
-            查询条件
-            <span style="float:right;">
-	            	<a class="qry-btn" style="text-decoration: none;" onclick="doQuery()">
-						<span class="glyphicon glyphicon-search"></span>查询
-	            	</a>
-				</span>
-        </div>
-        <form id="formSearch" class="form-horizontal">
-            <div class="form-group" style="margin:12px 0 0 0;">
-                    <span class="control-label col-sm-1" style="width: 7%;">
-						用户ID
-					</span>
-                <div class="col-sm-3" style="margin-bottom:12px; width: 18%">
-                    <input type="text" class="form-control" id="search_userId">
+<!--导入header-->
+<div th:replace="commons/header :: header"></div>
+<div th:replace="commons/left_menu :: leftMenu"></div>
+<section class="Hui-article-box">
+    <nav class="breadcrumb"><i class="Hui-iconfont"></i> <a th:href="@{/}" class="maincolor">首页</a>
+        <span class="c-999 en">&gt;</span>
+        <span class="c-666">用户管理</span>
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+           href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="Hui-article">
+        <div class="panel-body" style="padding-bottom:0px;">
+            <!--查询区域 begin-->
+            <div class="panel " style="margin-bottom:0px; border: solid 1px #eee;">
+                <div class="panel-heading"
+                     style="font-weight: bold; background-color: #f5fafe; border-bottom: solid 1px #eee;">
+                    查询条件
+                    <span style="float:right;">
+                        <a class="qry-btn" style="text-decoration: none;" onclick="doQuery()">
+                            <span class="glyphicon glyphicon-search"></span>查询
+                        </a>
+                    </span>
                 </div>
-                <span class="control-label col-sm-1" style="width: 7%;">
-						用户名称
-					</span>
-                <div class="col-sm-3" style="margin-bottom:12px; width: 18%;">
-                    <input type="text" class="form-control" id="search_userName">
-                </div>
-                <span class="control-label col-sm-1" style="width: 8%;">
-						城市
-					</span>
-                <div class="col-sm-3" style="margin-bottom:12px; width: 16%;">
-                    <select id="cityList" name="cityList" class="form-control">
-                    </select>
-                </div>
-                <span class="control-label col-sm-1" style="width: 8%;">
-						县城
-					</span>
-                <div class="col-sm-3" style="margin-bottom:12px; width: 16%;">
-                    <select disabled="disabled" id="countyList" name="countyList" class="form-control">
-                    </select>
-                </div>
-            </div>
-        </form>
-    </div>
-    <!--查询区域 end-->
-    <!--表格工具条 begin-->
-    <div id="toolbar" class="btn-group">
-        <button id="btn_add" type="button" class="btn btn-default" onclick="add()">
-            <span class="glyphicon glyphicon-plus"></span>添加用户
-        </button>
-        <button id="btn_batchDel" type="button" class="btn btn-default" onclick="batchDel()">
-            <span class="glyphicon glyphicon-trash"></span>删除用户
-        </button>
-        <button id="btn_export" type="button" class="btn btn-default" onclick="export()">
-            <span class="glyphicon glyphicon-export	"></span>导出用户
-        </button>
-    </div>
-    <!--表格工具条 end-->
-    <!--表格 begin-->
-    <table id="userTable"></table>
-    <!--表格 end-->
-
-</div>
-
-<!-- 新增修改弹出框 begin -->
-<div class="modal fade" id="addOrModifyModalDialog" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="addOrModifyModalDialogLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 720px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="addOrModifyModalDialogLabel">新增自定义报表</h4>
-            </div>
-            <div style="padding-right:1px;">
-                <div style="height:420px;overflow: auto;">
-                    <form class="form-horizontal" id="addFpfReptInfoForm">
-                        <div class="modal-body" style="width: 100%; height:420px; overflow-y:auto;">
-                            <input type="hidden" id="reportId" name="reportId" value="">
-                            <div class="form-group">
-			          				<span class="col-sm-3 control-label">
-				          				<span style='color:red;'>*</span>
-										自定义报表名称
-			          				</span>
-                                <div class="col-sm-8">
-                                    <input placeholder="" name="reportName" id="reportName"
-                                           value="" class="form-control" type="text">
-                                </div>
-                            </div>
-                            <div class="form-group">
-			          				<span class="col-sm-3 control-label">
-			          					<span style='color:red;'>*</span>
-										报表描述
-			          				</span>
-                                <div class="col-sm-8">
-			          					<textarea placeholder="" name="reportDesc" id="reportDesc"
-                                                  value="" class="form-control" style="margin: 0px; height: 90px; width: 448px;"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-			          				<span class="col-sm-3 control-label">
-			          					<span style='color:red;'>*</span>
-										指标类型
-			          				</span>
-                                <div class="col-sm-3">
-                                    <select name="kpiApp" id="kpiApp" class="form-control">
-                                        <option value='daily_code'>日指标</option>
-                                        <option value='daily_cumulate_code'>日累计指标</option>
-                                        <option value='monthly_code'>月指标</option>
-                                        <option value='monthly_cumulate_code'>月累计指标</option>
-                                    </select>
-                                </div>
-                                <span class="col-sm-2 control-label">
-			          					<span style='color:red;'>*</span>
-										指标应用
-			          				</span>
-                                <div class="col-sm-3">
-                                    <select name="kpiType" id="kpiType" class="form-control">
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-4">
-                                    <select id="appValues" class="form-control" name="appValues" style="width: 220px;height: 190px;" multiple="multiple">
-                                    </select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="col-sm-1"> </div>
-                                    <div class="col-sm-8">
-                                        <button id="btn_add" type="button" class="btn btn-default" onclick="moveOptionRight()">
-                                            <span class="glyphicon glyphicon-arrow-right"></span>添加
-                                        </button><br/><br/>
-                                        <button id="btn_add" type="button" class="btn btn-default" onclick="moveOptionLeft()">
-                                            <span class="glyphicon glyphicon-arrow-left"></span>删除
-                                        </button><br/><br/>
-                                        <button id="btn_add" type="button" class="btn btn-default" onclick="moveUp(this.form.selectValues)">
-                                            <span class="glyphicon glyphicon-arrow-up"></span>上移
-                                        </button><br/><br/>
-                                        <button id="btn_add" type="button" class="btn btn-default" onclick="moveDown(this.form.selectValues)">
-                                            <span class="glyphicon glyphicon-arrow-down"></span>下移
-                                        </button>
-                                    </div>
-                                    <div class="col-sm-1"> </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <select id="selectValues" class="form-control" name="selectValues" style="width: 220px;height: 190px;" multiple="multiple">
-                                    </select>
-                                </div>
+                <form id="formSearch" class="form-horizontal" style="width: 100%">
+                    <div class="form-group" style="margin:12px 0 0 0;">
+                        <div class="col-md-4">
+                            <span class="control-label col-sm-4">
+                                 用户名
+                            </span>
+                            <div class="col-sm-8" style="margin-bottom:12px;">
+                                <input type="text" class="form-control" id="search_userName" name="search_userName" placeholder="请输入用户名">
                             </div>
                         </div>
-                    </form>
-                </div>
+                        <div class="col-md-4">
+                            <span class="control-label col-sm-4">
+                                 昵称
+                            </span>
+                            <div class="col-sm-8" style="margin-bottom:12px;">
+                                <input type="text" class="form-control" id="search_nickName" name="search_nickName" placeholder="请输入用户名">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="control-label col-sm-4">
+                                 状态
+                            </span>
+                            <div class="col-sm-8" style="margin-bottom:12px;">
+                                <select id="search_status" name="search_status" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" id="submit-btn" class="btn btn-info btn-sm" onclick="addReportInfo()">提交</button>
-                <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">关闭</button>
+            <!--查询区域 end-->
+            <!--表格工具条 begin-->
+            <div id="toolbar" class="btn-group">
+                <button id="btn_add" type="button" class="btn btn-default" onclick="add()">
+                    <span class="glyphicon glyphicon-plus"></span>添加用户
+                </button>
+                <button id="btn_batchDel" type="button" class="btn btn-default" onclick="batchDel()">
+                    <span class="glyphicon glyphicon-trash"></span>删除用户
+                </button>
+                <button id="btn_export" type="button" class="btn btn-default" onclick="export()">
+                    <span class="glyphicon glyphicon-export	"></span>导出用户
+                </button>
             </div>
+            <!--表格工具条 end-->
+            <!--表格 begin-->
+            <table id="userTable"></table>
+            <!--表格 end-->
         </div>
-        <!-- /.modal-content -->
+        <div th:replace="commons/footer :: footer"></div>
     </div>
-    <!-- /.modal -->
-</div>
+</section>
 
 <div th:replace="commons/onload_js :: onloadJS"></div>
 <script th:src="@{/js/user/user.js}" src="js/user/user.js"></script>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="metaHead(title)">
+<html lang="en">
+<head th:fragment="modelHead(title)">
     <meta charset="UTF-8"/>
     <title th:text="${title}"></title>
     <meta charset="utf-8">
@@ -9,19 +9,6 @@
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="Bookmark" href="/favicon.ico">
-    <link rel="Shortcut Icon" href="/favicon.ico"/>
-
-
-    <!--h-ui begin-->
-    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" th:href="@{/h-ui/css/H-ui.min.css}"/>
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"
-          th:href="@{/h-ui.admin/css/H-ui.admin.css}"/>
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"
-          th:href="@{/h-ui.admin/skin/default/skin.css}"/>
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"
-          th:href="@{/h-ui.admin/css/style.css}"/>
-    <!--h-ui end-->
     <!--bootstrap begin-->
     <link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"
           href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -30,6 +17,11 @@
     <link th:href="@{/webjars/bootstrap-table/1.12.1/dist/bootstrap-table.min.css}"
           href="webjars/bootstrap-table/1.12.1/dist/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
     <!--bootstrap-table end-->
+    <!--font-awesome begin-->
+    <link href="webjars/font-awesome/4.7.0/css/font-awesome.min.css"
+          th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}"
+          rel="stylesheet" type="text/css"/>
+    <!--font-awesome end-->
     <!--bootstrap-datetimepicker begin-->
     <link href="webjars/bootstrap-datetimepicker/2.4.2/css/bootstrap-datetimepicker.min.css"
           th:href="@{/webjars/bootstrap-datetimepicker/2.4.2/css/bootstrap-datetimepicker.min.css}"
@@ -39,29 +31,11 @@
     <link th:href="@{/lib/bootstrapValidator/css/bootstrapValidator.min.css}"
           href="lib/bootstrapValidator/css/bootstrapValidator.min.css" rel="stylesheet" type="text/css"/>
     <!--bootstrapValidator end-->
-    <!--bootstrap3-dialog begin-->
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap3-dialog/css/bootstrap-dialog.min.css"
-          th:href="@{/lib/bootstrap3-dialog/css/bootstrap-dialog.min.css}"/>
-    <!--bootstrap3-dialog end-->
-
-
     <!--select2 begin-->
     <link href="webjars/select2/4.0.5/dist/css/select2.min.css"
           th:href="@{/webjars/select2/4.0.5/dist/css/select2.min.css}"
           rel="stylesheet" type="text/css"/>
     <!--select2 end-->
-
-
-    <!--font-awesome begin-->
-    <link href="webjars/font-awesome/4.7.0/css/font-awesome.min.css"
-          th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}"
-          rel="stylesheet" type="text/css"/>
-    <!--font-awesome end-->
-    <!--iconfont begin-->
-    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"
-          th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}"/>
-    <!--iconfont begin-->
-
     <!--公共样式 begin-->
     <link th:href="@{/css/common.css}"
           href="css/common.css" rel="stylesheet" type="text/css"/>
@@ -69,3 +43,7 @@
     <meta name="keywords" content="凤舞管理系统">
     <meta name="description" content="凤舞管理系统，完全免费开源的后台管理系统，适合中小型CMS,CRM,OA后台系统。">
 </head>
+<body>
+
+</body>
+</html>
