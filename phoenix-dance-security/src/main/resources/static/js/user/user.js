@@ -146,20 +146,18 @@ function openAddOrModifyDialog() {
         skin: 'layui-layer-rim', //加上边框
         area: ['450px', '320px'], //宽高
         content: divStr,
-        btn: ['取消','确定'],
-        btn1:function () {
-            alert("取消按钮");
-            layer.closeAll(); //疯狂模式，关闭所有层
+        btn: ['取消', '确定'],
+        btn1: function (index) {
+            layer.close(index);
         },
-        btn2:function () {
+        btn2: function () {
             alert("确认按钮");
-            return true;
+            return false;//禁止关闭窗口
         }
     });
     validatorUser();
 
 }
-
 
 
 function validatorUser() {
