@@ -58,14 +58,17 @@
             <!--查询区域 end-->
             <!--表格工具条 begin-->
             <div id="toolbar" class="btn-group">
-                <button id="btn_add" type="button" class="btn btn-default" onclick="add()">
+                <button id="btn_add" type="button" class="btn btn-default" onclick="openAddOrModifyDialog()">
                     <span class="glyphicon glyphicon-plus"></span>添加用户
                 </button>
                 <button id="btn_batchDel" type="button" class="btn btn-default" onclick="batchDel()">
                     <span class="glyphicon glyphicon-trash"></span>删除用户
                 </button>
+                <button id="btn_add" type="button" class="btn btn-default" onclick="openAddOrModifyDialog()">
+                    <span class="glyphicon glyphicon-pencil"></span>修改用户
+                </button>
                 <button id="btn_export" type="button" class="btn btn-default" onclick="export()">
-                    <span class="glyphicon glyphicon-export	"></span>导出用户
+                    <span class="glyphicon glyphicon-save"></span>导出用户
                 </button>
             </div>
             <!--表格工具条 end-->
