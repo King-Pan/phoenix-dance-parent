@@ -19,10 +19,14 @@ public class PasswordProperties {
     /**
      * 加密次数
      */
-    private int hashIterations;
+    private int hashIterations = 10;
     /**
      * 加密算法
      */
-    private String algorithmName;
+    private String algorithmName = "sha-1";
+    /**
+     * 默认密码
+     */
+    private String defaultPassword = "888888";
 
 }

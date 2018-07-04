@@ -43,6 +43,12 @@ public interface UserService {
     User save(UserInfo userInfo);
 
     /**
+     *  更新用户最后登录时间
+     * @param user 用户信息
+     */
+    void updateLastLoginTime(User user);
+
+    /**
      * 分页查询用户信息
      *
      * @param userInfo 查询参数

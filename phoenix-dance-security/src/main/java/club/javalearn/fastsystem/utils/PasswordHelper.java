@@ -24,15 +24,22 @@ public class PasswordHelper {
     @Autowired
     private ShiroProperties shiroProperties;
 
-    public void encryptPassword(User user) {
+    public void encryptPassword(User user,Boolean isNew) {
 
         user.setSalt(randomNumberGenerator.nextBytes().toHex());
+
+        String password;
+        if(isNew){
+            password = shiroProperties.getPassword().getDefaultPassword();
+        }else{
+            password = user.getPassword();
+        }
 
         String newPassword = new SimpleHash(
                 //加密算法
                 shiroProperties.getPassword().getAlgorithmName(),
                 //密码
-                user.getPassword(),
+                password,
                 //salt盐   username + salt
                 ByteSource.Util.bytes(user.getCredentialsSalt()),
                 //迭代次数

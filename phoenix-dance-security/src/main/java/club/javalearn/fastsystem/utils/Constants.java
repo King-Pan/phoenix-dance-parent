@@ -18,4 +18,9 @@ public interface Constants {
      * 未选择下拉框值
      */
     String NOT_SELECT = "-1";
+
+    /**
+     * 默认用户状态
+     */
+    String DEFAULT_STATUS = "1";
 }

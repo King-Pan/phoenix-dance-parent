@@ -2,6 +2,7 @@ package club.javalearn.fastsystem.web.controller;
 
 import club.javalearn.fastsystem.aspect.SysLog;
 import club.javalearn.fastsystem.common.Message;
+import club.javalearn.fastsystem.common.ServerResponse;
 import club.javalearn.fastsystem.model.User;
 import club.javalearn.fastsystem.parameter.UserInfo;
 import club.javalearn.fastsystem.service.UserService;
@@ -58,8 +59,9 @@ public class UserController {
     @ApiImplicitParam(name = "userInfo",value = "用户编号",dataType="UserInfo",paramType = "query")
     @PostMapping("user/")
     @SysLog(module = "用户模块",operation = "新增用户")
-    public User addUser(UserInfo userInfo){
-        return userService.save(userInfo);
+    public ServerResponse addUser(UserInfo userInfo){
+        userService.save(userInfo);
+        return ServerResponse.createBySuccessMessage("新增用户成功");
     }
 
     /**

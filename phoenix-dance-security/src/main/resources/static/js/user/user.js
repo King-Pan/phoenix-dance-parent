@@ -116,7 +116,7 @@ $(function () {
 
 function openAddOrModifyDialog() {
     var divStr = '<div style="overflow: auto;">';
-    divStr += '<form class="form-horizontal" id="infoForm">';
+    divStr += '<form class="form-horizontal" id="infoForm" th:action="@{/user/}" method="post">';
     divStr += '<div class="modal-body" style="width: 100%;overflow-y:auto;">';
     divStr += '<input type="hidden" id="userId" name="userId" value="">';
     //用户名
@@ -141,6 +141,24 @@ function openAddOrModifyDialog() {
     divStr += '</div>';
     divStr += '</div></div>';
 
+    var options={
+        url: $("#basicPath").attr("href") + "user/",
+        type: 'post',
+    //target:target, //服务器返回的响应数据显示在元素(Id)号确定
+        beforeSubmit:function(){
+            alert("提交之前");
+            return true;
+        }, //提交前执行的回调函数
+        success:function(){
+            alert("保存用户成功");
+        }, //提交成功后执行的回调函数
+        dataType:'json', //服务器返回数据类型
+        clearForm:true, //提交成功后是否清空表单中的字段值
+        restForm:true, //提交成功后是否重置表单中的字段值，即恢复到页面加载时的状态
+        timeout:6000 //设置请求时间，超过该时间后，自动退出请求，单位(毫秒)。
+    }
+    $('#infoForm').ajaxForm(options);
+
     layer.open({
         type: 1,
         skin: 'layui-layer-rim', //加上边框
@@ -151,8 +169,30 @@ function openAddOrModifyDialog() {
             layer.close(index);
         },
         btn2: function () {
-            alert("确认按钮");
-            return false;//禁止关闭窗口
+            $("#infoForm").bootstrapValidator('validate');//提交验证
+            if ($("#infoForm").data('bootstrapValidator').isValid()) {//获取验证结果，如果成功，执行下面代码
+                var postData = $("#infoForm").serializeJson();//表单序列化
+                $.ajax({
+                    url: $basicPathVal + "user/",
+                    type: 'post',
+                    dataType: 'json',
+                    data: postData,
+                    success:function (data) {
+                        layer.alert(data.msg, {icon: 6});
+                        if(data.status == 0){
+                            $("#userTable").bootstrapTable('refresh');
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+                })
+            }else{
+                layer.alert('格式不正确，请按照正确的格式填写', {icon: 6});
+                return false;//禁止关闭窗口
+            }
+
+
         }
     });
     validatorUser();

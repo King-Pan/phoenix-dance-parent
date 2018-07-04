@@ -42,7 +42,7 @@ public class User implements Serializable {
      * 登录用户名
      */
     @NotEmpty(message = "账号不能为空")
-    @Size(min = 8, max = 56)
+    @Size(min = 6, max = 56)
     @Column(nullable = false,length = 56,unique = true)
     private String userName;
 

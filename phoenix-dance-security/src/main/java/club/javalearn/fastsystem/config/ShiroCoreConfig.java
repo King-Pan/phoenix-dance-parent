@@ -3,7 +3,6 @@ package club.javalearn.fastsystem.config;
 import club.javalearn.fastsystem.properties.ShiroProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +14,6 @@ import org.springframework.core.annotation.Order;
  */
 @Configuration
 @EnableConfigurationProperties(ShiroProperties.class)
-@Order(-1)
 public class ShiroCoreConfig {
 }
+

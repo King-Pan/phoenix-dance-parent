@@ -8,6 +8,7 @@ import club.javalearn.fastsystem.parameter.UserInfo;
 import club.javalearn.fastsystem.repository.UserRepository;
 import club.javalearn.fastsystem.service.UserService;
 import club.javalearn.fastsystem.utils.Constants;
+import club.javalearn.fastsystem.utils.PasswordHelper;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +38,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+
+    @Autowired
+    private PasswordHelper passwordHelper;
+
     @Override
     public User findByUserName(String userName) {
         User user = userRepository.findByUserName(userName);
@@ -49,7 +55,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(UserInfo userInfo) {
-        return userRepository.save(userInfo.convertUser());
+        User user = userInfo.convertUser();
+        if(user.getUserId()==null){
+            //生成加密密码
+            passwordHelper.encryptPassword(user,true);
+            user.setCreateTime(new Date());
+            user.setUpdateTime(new Date());
+            user.setStatus(Constants.DEFAULT_STATUS);
+        }
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void updateLastLoginTime(User user) {
+        //更新登录信息
+        user.setLastLoginTime(new Date());
+        userRepository.save(user);
     }
 
 
