@@ -112,16 +112,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteUsers(String userIds) {
-        List<Long> ids = new ArrayList<>();
-        if (StringUtils.isNotBlank(userIds)) {
-            String[] users = userIds.split("-");
-            for (String userId : users) {
-                ids.add(Long.parseLong(userId));
-            }
-        } else {
-            throw new RuntimeException("删除用户,用户ID不能为空");
-        }
-        return userRepository.deleteUserByUserIds(ids);
+    public int deleteUsers(List<Long> userIds) {
+        return userRepository.deleteUserByUserIds(userIds);
     }
 }

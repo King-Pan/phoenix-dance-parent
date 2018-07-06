@@ -17,6 +17,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -26,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
  * Description: No Description
  */
 @Slf4j
-@Api(tags = "UserController",value = "用户管理",description = "用户管理")
+@Api(tags = "UserController", value = "用户管理", description = "用户管理")
 @RestController
 public class UserController {
 
@@ -37,8 +40,8 @@ public class UserController {
             value = "用户管理页面", notes = "进入用户管理页面"
     )
     @GetMapping("/user/")
-    @SysLog(module = "用户模块",operation = "进入用户管理页面")
-    public ModelAndView userPage(){
+    @SysLog(module = "用户模块", operation = "进入用户管理页面")
+    public ModelAndView userPage() {
         return new ModelAndView("system/user");
     }
 
@@ -46,41 +49,70 @@ public class UserController {
     @ApiOperation(
             value = "通过用户编号查询用户", notes = "通过用户编号查询用户"
     )
-    @ApiImplicitParam(name = "userId",value = "用户编号",dataType="Long",paramType = "path")
+    @ApiImplicitParam(name = "userId", value = "用户编号", dataType = "Long", paramType = "path")
     @GetMapping("/user/{userId}")
-    @SysLog(module = "用户模块",operation = "通过用户编号查询用户")
-    public User userPage(@PathVariable("userId") Long userId){
+    @SysLog(module = "用户模块", operation = "通过用户编号查询用户")
+    public User userPage(@PathVariable("userId") Long userId) {
         return userService.findByUserId(userId);
     }
 
     @ApiOperation(
             value = "新增用户", notes = "新增用户"
     )
-    @ApiImplicitParam(name = "userInfo",value = "用户编号",dataType="UserInfo",paramType = "query")
+    @ApiImplicitParam(name = "userInfo", value = "用户编号", dataType = "UserInfo", paramType = "query")
     @PostMapping("user/")
-    @SysLog(module = "用户模块",operation = "新增用户")
-    public ServerResponse addUser(UserInfo userInfo){
+    @SysLog(module = "用户模块", operation = "新增用户")
+    public ServerResponse addUser(UserInfo userInfo) {
         userService.save(userInfo);
         return ServerResponse.createBySuccessMessage("新增用户成功");
     }
 
+    @DeleteMapping("/user/")
+    public ServerResponse batchDeleteUser(@RequestParam("userIds[]") Long[] userIds) {
+        log.info("需要批量删除的用户ID： " + Arrays.toString(userIds));
+        ServerResponse serverResponse;
+        try {
+            userService.deleteUsers(Arrays.asList(userIds));
+            serverResponse = ServerResponse.createBySuccessMessage("批量删除用户成功");
+        }catch (Exception e){
+            log.error("批量删除用户失败\n",e);
+            serverResponse = ServerResponse.createByErrorMessage("批量删除用户失败\n " + e.getMessage());
+        }
+        return serverResponse;
+    }
+
+    @DeleteMapping("/user/{userId}")
+    public ServerResponse deleteUser(@PathVariable("userId") Long userId) {
+        log.info("需要删除的用户ID： " + userId);
+        ServerResponse serverResponse;
+        try {
+            userService.deleteUsers(Arrays.asList(userId));
+            serverResponse = ServerResponse.createBySuccessMessage("删除用户成功");
+        }catch (Exception e){
+            log.error("删除用户失败\n",e);
+            serverResponse = ServerResponse.createByErrorMessage("删除用户失败\n " + e.getMessage());
+        }
+        return serverResponse;
+    }
+
     /**
      * 分页查询
+     *
      * @param userInfo 查询参数
      * @param pageable 分页参数
      * @return 分页信息
      */
-    @ApiOperation(value = "登录处理",notes = "登录处理")
+    @ApiOperation(value = "登录处理", notes = "登录处理")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userInfo",value = "查询参数",dataType = "UserInfo",paramType = "query"),
-            @ApiImplicitParam(name = "pageable",value = "分页参数",dataType = "Pageable",paramType = "query")
+            @ApiImplicitParam(name = "userInfo", value = "查询参数", dataType = "UserInfo", paramType = "query"),
+            @ApiImplicitParam(name = "pageable", value = "分页参数", dataType = "Pageable", paramType = "query")
     })
     @GetMapping("/users/")
-    public Message<User> getUserList(UserInfo userInfo, @PageableDefault Pageable pageable){
-        if( log.isDebugEnabled()){
-            log.debug("查询参数 {}",userInfo);
+    public Message<User> getUserList(UserInfo userInfo, @PageableDefault Pageable pageable) {
+        if (log.isDebugEnabled()) {
+            log.debug("查询参数 {}", userInfo);
         }
-        return userService.getPageList(userInfo,pageable);
+        return userService.getPageList(userInfo, pageable);
     }
 
 }

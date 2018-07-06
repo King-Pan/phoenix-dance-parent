@@ -2,6 +2,7 @@ package club.javalearn.fastsystem.repository;
 
 import club.javalearn.fastsystem.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -41,6 +42,12 @@ public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredi
      */
     User findByUserId(Long userId);
 
+    /**
+     * 批量删除用户
+     * @param userIds 用户ID列表
+     * @return 成功记录数
+     */
     @Query(value = "delete from User u where u.userId in (:userIds) ")
+    @Modifying
     int deleteUserByUserIds(@Param("userIds") List<Long> userIds);
 }

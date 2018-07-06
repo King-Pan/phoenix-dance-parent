@@ -63,5 +63,5 @@ public interface UserService {
      * @param userIds 用户id集合
      * @return 成功个数
      */
-    int deleteUsers(String userIds);
+    int deleteUsers(List<Long> userIds);
 }

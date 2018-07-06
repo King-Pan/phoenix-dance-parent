@@ -106,6 +106,12 @@ function initTable() {
             align: 'center',
             valign: 'center',
             formatter: formatterUtils.getFullTime
+        },{
+            field:'ID',
+            title: '操作',
+            width: 120,
+            align: 'center',
+            formatter: actionFormatter
         }]
     });
 }
@@ -113,6 +119,87 @@ function initTable() {
 $(function () {
     initTable();
 });
+
+function getDatas() {
+    var datas = $('#userTable').bootstrapTable('getSelections');
+    if(datas.length === 0){
+        layer.alert('请选择至少一条数据', {icon: 6});
+    }
+    return datas;
+}
+
+
+function batchDel(){
+    var datas = getDatas();
+    var userIds = new Array();
+    datas.forEach(function (item) {
+        userIds.push(item.userId);
+    });
+    if(datas){
+        layer.confirm('是否确定要删除该数据？', {
+            btn: ['是','否'] //按钮
+        }, function(){
+            $.ajax({
+                url: $basicPathVal + "user/",
+                type : "post",
+                dataType : "json",
+                data: {
+                    _method: 'DELETE',
+                    userIds: userIds
+                },
+                success : function(data){
+                    layer.alert(data.msg, {icon: 6});
+                    if(data.status === 200){
+                        $("#userTable").bootstrapTable('refresh');
+                    }
+                },
+                error : function(){
+                    layer.alert('批量删除数据失败', {icon: 6});
+                }
+            })
+        }, function(){
+
+        });
+    }
+}
+
+function actionFormatter(value, row, index) {
+    var id = row.userId;
+    var result = "";
+    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"infoModal('" + id + "')\" title='修改'><span class='glyphicon glyphicon-edit'></span></a>";
+    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"delInfo('" + id + "')\" title='删除'><span class='glyphicon glyphicon-trash'></span></a>";
+    //result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"DeleteByIds('" + id + "')\" title='修改可视地市'><span class='glyphicon glyphicon-list'></span></a>";
+    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"showUserRole('" + id + "')\" title='编辑用户角色'><span class='glyphicon glyphicon-user'></span></a>";
+    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"showUserGroup('" + id + "')\" title='编辑用户组'><span class='glyphicon glyphicon-user'></span><span class='glyphicon glyphicon-user'></span></a>";
+
+    return result;
+}
+
+function delInfo(userId){
+    layer.confirm('是否确定要删除该数据？', {
+        btn: ['是','否'] //按钮
+    }, function(){
+        $.ajax({
+            url: $basicPathVal + "user/" + userId,
+            type : "post",
+            dataType : "json",
+            data: {
+                _method: 'DELETE'
+            },
+            success : function(data){
+                layer.alert(data.msg, {icon: 6});
+                if(data.status === 200){
+                    $("#userTable").bootstrapTable('refresh');
+                }
+            },
+            error : function(){
+                layer.alert('删除数据失败', {icon: 6});
+            }
+        })
+    }, function(){
+
+    });
+}
 
 function openAddOrModifyDialog() {
     var divStr = '<div style="overflow: auto;">';
@@ -179,7 +266,7 @@ function openAddOrModifyDialog() {
                     data: postData,
                     success:function (data) {
                         layer.alert(data.msg, {icon: 6});
-                        if(data.status == 0){
+                        if(data.status === 200){
                             $("#userTable").bootstrapTable('refresh');
                             return true;
                         }else{
@@ -198,6 +285,8 @@ function openAddOrModifyDialog() {
     validatorUser();
 
 }
+
+
 
 
 function validatorUser() {
@@ -265,7 +354,7 @@ function validatorUser() {
                         message: '请输入11位手机号码'
                     },
                     regexp: {
-                        regexp: /^1[3|5|8]{1}[0-9]{9}$/,
+                        regexp: /^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/,
                         message: '请输入正确的手机号码'
                     }
                 }
