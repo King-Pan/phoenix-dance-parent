@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="commons/meta_head :: metaHead(title='快速开发平台 | 用户管理')">
 </head>
-<body>
+<body id="userPage">
 <!--导入header-->
 <div th:replace="commons/header :: header"></div>
 <div th:replace="commons/left_menu :: leftMenu"></div>
@@ -49,6 +49,10 @@
                             </span>
                             <div class="col-sm-8" style="margin-bottom:12px;">
                                 <select id="search_status" name="search_status" class="form-control">
+                                    <option value="-1" selected="selected">请选择状态</option>
+                                    <option value="0">禁用</option>
+                                    <option value="1">启用</option>
+                                    <option value="2">删除</option>
                                 </select>
                             </div>
                         </div>
@@ -64,7 +68,7 @@
                 <button id="btn_batchDel" type="button" class="btn btn-default" onclick="batchDel()">
                     <span class="glyphicon glyphicon-trash"></span>删除用户
                 </button>
-                <button id="btn_add" type="button" class="btn btn-default" onclick="openAddOrModifyDialog()">
+                <button id="btn_add" type="button" class="btn btn-default" onclick="openAddOrModifyDialog(true)">
                     <span class="glyphicon glyphicon-pencil"></span>修改用户
                 </button>
                 <button id="btn_export" type="button" class="btn btn-default" onclick="export()">
@@ -82,5 +86,8 @@
 
 <div th:replace="commons/onload_js :: onloadJS"></div>
 <script th:src="@{/js/user/user.js}" src="js/user/user.js"></script>
+<!--<script th:src="@{/js/security/user.js}" src="js/security/user.js"></script>-->
+
+
 </body>
 </html>

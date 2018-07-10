@@ -3,6 +3,9 @@ package club.javalearn.fastsystem.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -27,6 +30,9 @@ import java.util.*;
 @AllArgsConstructor
 @ToString(exclude = {"roles"})
 @ApiModel(value = "User",description = "用户信息")
+@DynamicInsert
+@DynamicUpdate
+@SelectBeforeUpdate
 public class User implements Serializable {
 
     public static Long serialVersionUID = 1l;
@@ -41,7 +47,6 @@ public class User implements Serializable {
     /**
      * 登录用户名
      */
-    @NotEmpty(message = "账号不能为空")
     @Size(min = 6, max = 56)
     @Column(nullable = false,length = 56,unique = true)
     private String userName;
@@ -55,7 +60,6 @@ public class User implements Serializable {
     /**
      * 用户邮箱
      */
-    @NotEmpty(message = "邮箱不能为空")
     @Size(max = 50)
     @Email(message = "邮箱格式不对")
     private String email;
@@ -68,7 +72,6 @@ public class User implements Serializable {
     /**
      * 用户昵称
      */
-    @NotEmpty(message = "昵称不能为空")
     @Size(min = 2, max = 20)
     @Column(length = 20, nullable = false)
     private String nickName;
@@ -76,7 +79,6 @@ public class User implements Serializable {
     /**
      * 用户密码
      */
-    @NotEmpty(message = "密码不能为空")
     @Size(min = 8, max = 100)
     @Column(length = 100)
     private String password;
@@ -103,7 +105,7 @@ public class User implements Serializable {
     private Date lastLoginTime;
 
     /**
-     * 用户状态
+     * 用户状态 0: 禁用 1: 启用 2: 删除
      */
     @Column(length = 10)
     private String status;

@@ -42,7 +42,7 @@ public class UserController {
     @GetMapping("/user/")
     @SysLog(module = "用户模块", operation = "进入用户管理页面")
     public ModelAndView userPage() {
-        return new ModelAndView("system/user");
+        return new ModelAndView("security/user");
     }
 
 
@@ -65,6 +65,24 @@ public class UserController {
     public ServerResponse addUser(UserInfo userInfo) {
         userService.save(userInfo);
         return ServerResponse.createBySuccessMessage("新增用户成功");
+    }
+
+    @ApiOperation(
+            value = "修改用户", notes = "修改用户"
+    )
+    @ApiImplicitParam(name = "userInfo", value = "用户信息", dataType = "UserInfo", paramType = "query")
+    @PutMapping("user/")
+    @SysLog(module = "用户模块", operation = "新增用户")
+    public ServerResponse modifyUser(UserInfo userInfo) {
+        ServerResponse serverResponse;
+        try {
+            userService.save(userInfo);
+            serverResponse = ServerResponse.createBySuccessMessage("修改用户成功");
+        }catch (Exception e){
+            log.error("修改用户失败\n",e);
+            serverResponse = ServerResponse.createByErrorMessage("修改用户失败\n " + e.getMessage());
+        }
+        return serverResponse;
     }
 
     @DeleteMapping("/user/")

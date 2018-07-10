@@ -1,10 +1,7 @@
 package club.javalearn.fastsystem.repository;
 
 import club.javalearn.fastsystem.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +19,7 @@ import java.util.List;
  * Description: No Description
  */
 @Transactional(rollbackFor = RuntimeException.class)
-public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredicateExecutor<User> {
+public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredicateExecutor<User>,JpaSpecificationExecutor<User>{
 
     /**
      * 通过用户名查找用户
@@ -47,7 +44,7 @@ public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredi
      * @param userIds 用户ID列表
      * @return 成功记录数
      */
-    @Query(value = "delete from User u where u.userId in (:userIds) ")
+    @Query(value = "update  User u set u.status=2  where u.userId in (:userIds) ")
     @Modifying
     int deleteUserByUserIds(@Param("userIds") List<Long> userIds);
 }

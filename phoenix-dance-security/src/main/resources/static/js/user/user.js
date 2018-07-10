@@ -34,9 +34,9 @@ function initTable() {
             var param = {
                 rows: params.limit,
                 page: params.offset / params.limit,
-                userName: $("#search_nickName").val(),
+                userName: $("#search_userName").val(),
                 nickName: $("#search_nickName").val(),
-                status: $("#search_nickName").val()
+                status: $("#search_status").val()
             };
             return param;
         },			//传递参数（*）
@@ -53,6 +53,9 @@ function initTable() {
         showFullscreen: true,
         cardView: false,                    //是否显示详细视图
         detailView: false,                  //是否显示父子表
+        onLoadSuccess: function () {
+            overAllIds = new Set();
+        },
         columns: [{
             align: 'center',
             checkbox: true,                          // 显示复选框
@@ -118,6 +121,7 @@ function initTable() {
 
 $(function () {
     initTable();
+    $("#search_status").select2();
 });
 
 function getDatas() {
@@ -166,7 +170,7 @@ function batchDel(){
 function actionFormatter(value, row, index) {
     var id = row.userId;
     var result = "";
-    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"infoModal('" + id + "')\" title='修改'><span class='glyphicon glyphicon-edit'></span></a>";
+    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"openAddOrModifyDialog(true)\" title='修改'><span class='glyphicon glyphicon-edit'></span></a>";
     result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"delInfo('" + id + "')\" title='删除'><span class='glyphicon glyphicon-trash'></span></a>";
     //result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"DeleteByIds('" + id + "')\" title='修改可视地市'><span class='glyphicon glyphicon-list'></span></a>";
     result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"showUserRole('" + id + "')\" title='编辑用户角色'><span class='glyphicon glyphicon-user'></span></a>";
@@ -201,7 +205,9 @@ function delInfo(userId){
     });
 }
 
-function openAddOrModifyDialog() {
+function openAddOrModifyDialog(flag) {
+
+
     var divStr = '<div style="overflow: auto;">';
     divStr += '<form class="form-horizontal" id="infoForm" th:action="@{/user/}" method="post">';
     divStr += '<div class="modal-body" style="width: 100%;overflow-y:auto;">';
@@ -259,6 +265,13 @@ function openAddOrModifyDialog() {
             $("#infoForm").bootstrapValidator('validate');//提交验证
             if ($("#infoForm").data('bootstrapValidator').isValid()) {//获取验证结果，如果成功，执行下面代码
                 var postData = $("#infoForm").serializeJson();//表单序列化
+                var ajaxType = 'post';
+                if(postData.userId){
+                    console.log(postData);
+                    console.log(postData.userId);
+                    ajaxType = 'put';
+                    postData._method = 'PUT';
+                }
                 $.ajax({
                     url: $basicPathVal + "user/",
                     type: 'post',
@@ -282,6 +295,16 @@ function openAddOrModifyDialog() {
 
         }
     });
+    if(flag){
+        var datas = $('#userTable').bootstrapTable('getSelections');
+        if(datas.length !== 1){
+            layer.alert('请选择一条数据进行修改', {icon: 6});
+            return;
+        }else{
+            $('#infoForm').setForm(datas[0]);
+        }
+
+    }
     validatorUser();
 
 }
@@ -361,6 +384,10 @@ function validatorUser() {
             }
         }
     });
+}
+
+function doQuery() {
+    $("#userTable").bootstrapTable('refresh');
 }
 
 $(document).ready(function () {

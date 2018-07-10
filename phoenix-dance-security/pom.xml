@@ -168,6 +168,11 @@
             <groupId>org.webjars.bower</groupId>
             <artifactId>jquery-form</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>vue</artifactId>
+        </dependency>
+
 
         <!--webjars end-->
     </dependencies>

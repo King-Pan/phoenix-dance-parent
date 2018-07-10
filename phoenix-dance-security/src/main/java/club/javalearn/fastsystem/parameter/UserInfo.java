@@ -94,6 +94,7 @@ public class UserInfo implements Serializable {
         user.setCreateTime(createTime);
         user.setUpdateTime(updateTime);
         user.setLastLoginTime(lastLoginTime);
+        user.setStatus(status);
 
         return user;
     }
