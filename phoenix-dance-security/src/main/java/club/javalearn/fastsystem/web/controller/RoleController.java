@@ -69,6 +69,26 @@ public class RoleController {
         return roleService.getPageList(roleInfo, pageable);
     }
 
+    /**
+     * 分页查询未分配的角色信息
+     *
+     * @param userId 用户ID
+     * @param pageable 分页参数
+     * @return 分页信息
+     */
+    @ApiOperation(value = "登录处理", notes = "登录处理")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户ID", dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(name = "pageable", value = "分页参数", dataType = "Pageable", paramType = "query")
+    })
+    @GetMapping("role/{userId}")
+    public Message<Role> getNoSelectRole(@PathVariable("userId")Long userId, @PageableDefault Pageable pageable) {
+        if (log.isDebugEnabled()) {
+            log.debug("查询参数 {}", userId);
+        }
+        return roleService.getNoSelectRole(userId, pageable);
+    }
+
     @ApiOperation(
             value = "删除角色", notes = "删除角色"
     )

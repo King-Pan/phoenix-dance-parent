@@ -111,6 +111,21 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public Message<Role> getNoSelectRole(Long userId, Pageable pageable) {
+        BootstrapMessage<Role> message = new BootstrapMessage<>();
+        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "updateTime"));
+        sort.and(new Sort(Sort.Direction.ASC, "status"));
+        sort.and(new Sort(Sort.Direction.ASC, "roleId"));
+        Page<Role> rolePage = roleRepository.getNoSelectRoleList(userId,pageable);
+        message.setLimit(rolePage.getSize());
+        message.setRows(rolePage.getContent());
+        message.setTotal(rolePage.getTotalElements());
+        message.setStart(rolePage.getNumber());
+        log.debug("limit=" + rolePage.getSize() + ",total=" + rolePage.getTotalElements() + ",start=" + rolePage.getNumber() + ",numberOfElements=" + rolePage.getNumberOfElements());
+        return message;
+    }
+
+    @Override
     public void modifyStatus(Long roleId, String status) {
         roleRepository.modifyStatus(roleId,status);
     }

@@ -27,6 +27,15 @@ public interface RoleService {
     Message<Role> getPageList(final RoleInfo roleInfo, Pageable pageable);
 
     /**
+     * 分页查询用户未选择的角色信息
+     *
+     * @param userId 用户ID
+     * @param pageable 分页参数
+     * @return 用户信息列表
+     */
+    Message<Role> getNoSelectRole(final Long userId, Pageable pageable);
+
+    /**
      * 批量删除用户
      *
      * @param roleIds 角色id集合

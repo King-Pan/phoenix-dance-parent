@@ -27,7 +27,7 @@ function modifyRole(userId) {
         '<div class="panel panel-info" style="width: 330px;height: 300px;margin:10px ">' +
         '<div class="panel-heading">未选角色</div>' +
         '<div class="panel-body">' +
-        '<table id="roleTable" style="height: 230px"></table>' +
+        '<table id="roleTable"></table>' +
         '</div></div></div></div>';
 
     layer.open({
@@ -94,7 +94,7 @@ var SelectRoleTable = function () {
             queryParams: {},			//传递参数（*）
             search: false,                      //是否显示表格搜索
             minimumCountColumns: 2,             //最少允许的列数
-            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            height: 220,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
             uniqueId: "roleId",                     //每一行的唯一标识，一般为主键列
             idField: "roleId",
             formatLoadingMessage: function(){
@@ -146,7 +146,7 @@ var NoSelectRoleTable = function () {
             url: '/role/' + userId,
             striped: true,                      //是否显示行间隔色
             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-            pagination: true,                   //是否显示分页（*）
+            //pagination: true,                   //是否显示分页（*）
             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
             pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
             pageSize: 10,                     //每页的记录行数（*）
@@ -154,7 +154,7 @@ var NoSelectRoleTable = function () {
             queryParams: {},			//传递参数（*）
             search: false,                      //是否显示表格搜索
             minimumCountColumns: 2,             //最少允许的列数
-            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            height: 220,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
             uniqueId: "roleId",                     //每一行的唯一标识，一般为主键列
             idField: "roleId",
             formatLoadingMessage: function(){
