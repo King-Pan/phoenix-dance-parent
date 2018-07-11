@@ -3,6 +3,7 @@ package club.javalearn.fastsystem.repository;
 import club.javalearn.fastsystem.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,18 @@ public interface RoleRepository extends JpaRepository<Role,Long>,QuerydslPredica
      * @param roleIds 角色ID
      * @return 修改角色成功数
      */
+    @Modifying
     @Query(value = "update  Role r set r.status=2  where r.roleId in (:roleIds)")
     int deleteRoleByIds(@Param("roleIds") List<Long> roleIds);
+
+
+    /**
+     * 通过角色ID修改角色状态
+     * @param roleId 角色ID
+     * @param status 状态
+     */
+    @Modifying
+    @Query(value = "update  Role r set r.status=:status  where r.roleId = :roleId")
+    void modifyStatus(@Param("roleId") Long roleId,@Param("status") String status);
+
 }

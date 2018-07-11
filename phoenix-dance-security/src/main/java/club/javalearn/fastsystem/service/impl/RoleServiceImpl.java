@@ -96,12 +96,22 @@ public class RoleServiceImpl implements RoleService {
         Role result;
         //修改
         if(role.getRoleId()!=null){
-            role.setUpdateTime(new Date());
-            result = roleRepository.save(role);
+            Role r = roleRepository.getOne(role.getRoleId());
+            r.setRemark(role.getRemark());
+            r.setRoleCode(role.getRoleCode());
+            r.setRoleName(role.getRoleName());
+            r.setUpdateTime(new Date());
+            result = roleRepository.save(r);
         }else{
             role.setCreateTime(new Date());
+            role.setStatus(Constants.DEFAULT_STATUS);
             result = roleRepository.save(role);
         }
         return result;
+    }
+
+    @Override
+    public void modifyStatus(Long roleId, String status) {
+        roleRepository.modifyStatus(roleId,status);
     }
 }

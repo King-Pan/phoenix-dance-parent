@@ -3,6 +3,7 @@ package club.javalearn.fastsystem.web.controller;
 import club.javalearn.fastsystem.aspect.SysLog;
 import club.javalearn.fastsystem.common.Message;
 import club.javalearn.fastsystem.common.ServerResponse;
+import club.javalearn.fastsystem.model.Role;
 import club.javalearn.fastsystem.model.User;
 import club.javalearn.fastsystem.parameter.UserInfo;
 import club.javalearn.fastsystem.service.UserService;
@@ -17,8 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,13 +47,21 @@ public class UserController {
 
 
     @ApiOperation(
-            value = "通过用户编号查询用户", notes = "通过用户编号查询用户"
+            value = "通过用户编号查询用户角色", notes = "通过用户编号查询用户角色"
     )
     @ApiImplicitParam(name = "userId", value = "用户编号", dataType = "Long", paramType = "path")
     @GetMapping("/user/{userId}")
-    @SysLog(module = "用户模块", operation = "通过用户编号查询用户")
-    public User userPage(@PathVariable("userId") Long userId) {
-        return userService.findByUserId(userId);
+    @SysLog(module = "用户模块", operation = "通过用户编号查询用户角色")
+    public Object userPage(@PathVariable("userId") Long userId) {
+        Map<String,Object> result = new HashMap<>(2);
+        User user = userService.findByUserId(userId);
+        Set<Role> roles = new HashSet<>();
+        if (user!=null){
+            roles = user.getRoles();
+        }
+        result.put("rows",roles);
+        result.put("total", roles.size());
+        return result;
     }
 
     @ApiOperation(

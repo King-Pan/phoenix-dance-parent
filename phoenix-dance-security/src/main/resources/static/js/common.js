@@ -51,6 +51,23 @@ formUtils.serializeJson = function (id) {
     return idata;
 }
 
+var statusFormat = function (value,row,index) {
+    var status;
+    if(value){
+        if(value==0){
+            status = '<span class="label label-warning">禁用</span>';
+        }else if(value==1){
+            status = '<span class="label label-success">启用</span>';
+        }else if(value==2){
+            status = '<span class="label label-danger">删除</span>';
+        }else{
+            status ='<span class="label label-info">未知的状态</span>';
+        }
+    }
+    return status;
+};
+
+
 $.fn.serializeObject = function()
 {
     var o = {};

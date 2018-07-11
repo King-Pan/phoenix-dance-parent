@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<head th:replace="commons/meta_head :: metaHead(title='快速开发平台 | 用户管理')">
+<head th:replace="commons/meta_head :: metaHead(title='快速开发平台 | 角色管理')">
 </head>
-<body id="userPage">
+<body id="rolePage">
 <!--导入header-->
 <div th:replace="commons/header :: header"></div>
 <div th:replace="commons/left_menu :: leftMenu"></div>
 <section class="Hui-article-box">
     <nav class="breadcrumb"><i class="Hui-iconfont"></i> <a th:href="@{/}" class="maincolor">首页</a>
         <span class="c-999 en">&gt;</span>
-        <span class="c-666">用户管理</span>
+        <span class="c-666">角色管理</span>
         <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
            href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
     <div class="Hui-article">
@@ -29,18 +29,18 @@
                     <div class="form-group" style="margin:12px 0 0 0;">
                         <div class="col-md-4">
                             <span class="control-label col-sm-4">
-                                 用户名
+                                 角色编码
                             </span>
                             <div class="col-sm-8" style="margin-bottom:12px;">
-                                <input type="text" class="form-control" id="search_userName" name="search_userName" placeholder="请输入用户名">
+                                <input type="text" class="form-control" id="search_roleCode" name="search_userName" placeholder="请输入角色编码">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <span class="control-label col-sm-4">
-                                 昵称
+                                 角色名称
                             </span>
                             <div class="col-sm-8" style="margin-bottom:12px;">
-                                <input type="text" class="form-control" id="search_nickName" name="search_nickName" placeholder="请输入用户名">
+                                <input type="text" class="form-control" id="search_roleName" name="search_roleName" placeholder="请输入角色名称">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -63,32 +63,26 @@
             <!--表格工具条 begin-->
             <div id="toolbar" class="btn-group">
                 <button id="btn_add" type="button" class="btn btn-default" onclick="openAddOrModifyDialog()">
-                    <span class="glyphicon glyphicon-plus"></span>添加用户
+                    <span class="glyphicon glyphicon-plus"></span>添加角色
                 </button>
                 <button id="btn_batchDel" type="button" class="btn btn-default" onclick="batchDel()">
-                    <span class="glyphicon glyphicon-trash"></span>删除用户
+                    <span class="glyphicon glyphicon-trash"></span>删除角色
                 </button>
                 <button id="btn_add" type="button" class="btn btn-default" onclick="openAddOrModifyDialog(true)">
-                    <span class="glyphicon glyphicon-pencil"></span>修改用户
-                </button>
-                <button id="btn_export" type="button" class="btn btn-default" onclick="export()">
-                    <span class="glyphicon glyphicon-save"></span>导出用户
+                    <span class="glyphicon glyphicon-pencil"></span>修改角色
                 </button>
             </div>
             <!--表格工具条 end-->
             <!--表格 begin-->
-            <table id="userTable"></table>
+            <table id="roleTable"  class="table table-condensed"></table>
             <!--表格 end-->
         </div>
         <div th:replace="commons/footer :: footer"></div>
     </div>
 </section>
 
-
-
 <div th:replace="commons/onload_js :: onloadJS"></div>
-<script th:src="@{/js/security/user.js}" src="js/security/user.js"></script>
-<script th:src="@{/js/security/userRole.js}" src="js/security/userRole.js"></script>
+<script th:src="@{/js/security/role.js}" src="js/security/role.js"></script>
 <!--<script th:src="@{/js/security/user.js}" src="js/security/user.js"></script>-->
 
 

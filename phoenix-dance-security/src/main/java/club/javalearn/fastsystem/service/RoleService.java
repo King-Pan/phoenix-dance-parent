@@ -41,4 +41,11 @@ public interface RoleService {
      * @return 修改后的角色信息
      */
     Role save(RoleInfo roleInfo);
+
+    /**
+     * 通过角色ID修改角色状态
+     * @param roleId 角色ID
+     * @param status 状态
+     */
+    void modifyStatus(Long roleId,String status);
 }
