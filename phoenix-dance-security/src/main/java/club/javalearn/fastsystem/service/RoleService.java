@@ -33,7 +33,7 @@ public interface RoleService {
      * @param pageable 分页参数
      * @return 用户信息列表
      */
-    Message<Role> getNoSelectRole(final Long userId, Pageable pageable);
+    Message<Role> getNoSelectRole(final Long userId,String name, Pageable pageable);
 
     /**
      * 批量删除用户

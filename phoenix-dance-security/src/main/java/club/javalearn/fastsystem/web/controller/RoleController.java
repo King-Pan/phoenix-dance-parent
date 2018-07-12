@@ -82,11 +82,11 @@ public class RoleController {
             @ApiImplicitParam(name = "pageable", value = "分页参数", dataType = "Pageable", paramType = "query")
     })
     @GetMapping("role/{userId}")
-    public Message<Role> getNoSelectRole(@PathVariable("userId")Long userId, @PageableDefault Pageable pageable) {
+    public Object getNoSelectRole(@PathVariable("userId")Long userId,@RequestParam("name")String name, @PageableDefault Pageable pageable) {
         if (log.isDebugEnabled()) {
             log.debug("查询参数 {}", userId);
         }
-        return roleService.getNoSelectRole(userId, pageable);
+        return roleService.getNoSelectRole(userId, name,pageable);
     }
 
     @ApiOperation(
@@ -107,6 +107,8 @@ public class RoleController {
         }
         return serverResponse;
     }
+
+
 
     @ApiOperation(
             value = "批量删除角色", notes = "批量删除角色"

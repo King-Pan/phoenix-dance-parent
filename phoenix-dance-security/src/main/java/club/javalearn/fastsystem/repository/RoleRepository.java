@@ -61,4 +61,23 @@ public interface RoleRepository extends JpaRepository<Role, Long>, QuerydslPredi
     )
     Page<Role> getNoSelectRoleList(@Param("userId") Long userId, Pageable pageable);
 
+
+    /**
+     * 用户未选择的角色信息
+     * @param userId 用户ID
+     * @param name 角色编码或者角色名称
+     * @param pageable 分页参数
+     * @return 角色列表
+     */
+    @Query(
+            value = "select r.* from sys_role r WHERE " +
+                    " (role_code like :name or role_name like :name) "+
+                    " and not exists(select ur.role_id from sys_user_role ur WHERE ur.user_id=:userId and ur.role_id=r.role_id)",
+            countQuery = "select count(1) from sys_role r WHERE " +
+                    " (role_code like :name or role_name like :name) "+
+                    "and not exists(select ur.role_id from sys_user_role ur WHERE ur.user_id=:userId and ur.role_id=r.role_id) ",
+            nativeQuery = true
+    )
+    Page<Role> getNoSelectRoleList(@Param("userId") Long userId,@Param("name") String name, Pageable pageable);
+
 }

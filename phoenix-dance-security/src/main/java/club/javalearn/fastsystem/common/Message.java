@@ -1,5 +1,7 @@
 package club.javalearn.fastsystem.common;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -9,4 +11,5 @@ package club.javalearn.fastsystem.common;
  * Description: No Description
  */
 public interface Message<T> {
+
 }

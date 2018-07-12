@@ -42,6 +42,21 @@ public interface UserService {
      */
     User save(UserInfo userInfo);
 
+
+    /**
+     * 添加用户角色
+     * @param userId 用户ID
+     * @param roleId 角色ID稽核
+     */
+    void addRole(Long userId,List<Long> roleId);
+
+    /**
+     * 删除用户角色
+     * @param userId 用户ID
+     * @param roleId 角色ID稽核
+     */
+    void deleteRole(Long userId,List<Long> roleId);
+
     /**
      *  更新用户最后登录时间
      * @param user 用户信息

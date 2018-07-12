@@ -2,8 +2,10 @@ package club.javalearn.fastsystem.service.impl;
 
 import club.javalearn.fastsystem.common.BootstrapMessage;
 import club.javalearn.fastsystem.common.Message;
+import club.javalearn.fastsystem.model.Role;
 import club.javalearn.fastsystem.model.User;
 import club.javalearn.fastsystem.parameter.UserInfo;
+import club.javalearn.fastsystem.repository.RoleRepository;
 import club.javalearn.fastsystem.repository.UserRepository;
 import club.javalearn.fastsystem.service.UserService;
 import club.javalearn.fastsystem.utils.Constants;
@@ -23,6 +25,7 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
 
     @Autowired
@@ -75,6 +81,22 @@ public class UserServiceImpl implements UserService {
         }
 
         return result;
+    }
+
+    @Override
+    public void deleteRole(Long userId, List<Long> roleId) {
+        User user = userRepository.findByUserId(userId);
+        Set<Role> roles = user.getRoles();
+        roles.removeAll(roleRepository.findAllById(roleId));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void addRole(Long userId, List<Long> roleId) {
+        User user = userRepository.findByUserId(userId);
+        Set<Role> roles = user.getRoles();
+        roles.addAll(roleRepository.findAllById(roleId));
+        userRepository.save(user);
     }
 
     @Override

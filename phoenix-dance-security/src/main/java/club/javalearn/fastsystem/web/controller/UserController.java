@@ -76,6 +76,50 @@ public class UserController {
     }
 
     @ApiOperation(
+            value = "增加用户角色", notes = "增加用户角色"
+    )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户ID", dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "roleIds", value = "角色ID集合", dataType = "Long[]", paramType = "query")
+    })
+    @PostMapping("user/role/{userId}")
+    @SysLog(module = "用户模块", operation = "增加用户角色")
+    public ServerResponse addUserRole(@PathVariable("userId") Long userId, @RequestParam("roleIds[]") Long[] roleIds) {
+        log.info("需要增加的用户角色的信息: userId = {},roleIds = {}", userId, Arrays.toString(roleIds));
+        ServerResponse serverResponse;
+        try {
+            userService.addRole(userId,Arrays.asList(roleIds));
+            serverResponse = ServerResponse.createBySuccessMessage("增加用户角色成功");
+        } catch (Exception e) {
+            log.error("增加用户角色失败\n", e);
+            serverResponse = ServerResponse.createByErrorMessage("增加用户角色失败\n " + e.getMessage());
+        }
+        return serverResponse;
+    }
+
+    @ApiOperation(
+            value = "删除用户角色", notes = "删除用户角色"
+    )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户ID", dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "roleIds", value = "角色ID集合", dataType = "Long[]", paramType = "query")
+    })
+    @DeleteMapping("user/role/{userId}")
+    @SysLog(module = "用户模块", operation = "删除用户角色")
+    public ServerResponse deleteUserRole(@PathVariable("userId") Long userId, @RequestParam("roleIds[]") Long[] roleIds) {
+        log.info("需要删除的用户角色的信息: userId = {},roleIds = {}", userId, Arrays.toString(roleIds));
+        ServerResponse serverResponse;
+        try {
+            userService.deleteRole(userId,Arrays.asList(roleIds));
+            serverResponse = ServerResponse.createBySuccessMessage("删除用户角色成功");
+        } catch (Exception e) {
+            log.error("删除用户角色失败\n", e);
+            serverResponse = ServerResponse.createByErrorMessage("删除用户角色失败\n " + e.getMessage());
+        }
+        return serverResponse;
+    }
+
+    @ApiOperation(
             value = "修改用户", notes = "修改用户"
     )
     @ApiImplicitParam(name = "userInfo", value = "用户信息", dataType = "UserInfo", paramType = "query")
