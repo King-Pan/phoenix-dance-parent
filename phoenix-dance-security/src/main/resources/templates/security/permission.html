@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="commons/meta_head :: metaHead(title='快速开发平台 | 权限管理')">
 </head>
-<body id="rolePage">
+<body id="permissionVm">
 <!--导入header-->
 <div th:replace="commons/header :: header"></div>
 <div th:replace="commons/left_menu :: leftMenu"></div>
@@ -62,14 +62,14 @@
             <!--查询区域 end-->
             <!--表格工具条 begin-->
             <div id="toolbar" class="btn-group">
-                <button id="btn_add" type="button" class="btn btn-default" onclick="openAddOrModifyDialog()">
-                    <span class="glyphicon glyphicon-plus"></span>添加角色
+                <button id="btn_add" type="button" class="btn btn-default" @click="add">
+                    <span class="glyphicon glyphicon-plus"></span>添加资源
                 </button>
-                <button id="btn_batchDel" type="button" class="btn btn-default" onclick="batchDel()">
-                    <span class="glyphicon glyphicon-trash"></span>删除角色
+                <button id="btn_batchDel" type="button" class="btn btn-default" v-on:click="update">
+                    <span class="glyphicon glyphicon-trash"></span>删除资源
                 </button>
-                <button id="btn_add" type="button" class="btn btn-default" onclick="openAddOrModifyDialog(true)">
-                    <span class="glyphicon glyphicon-pencil"></span>修改角色
+                <button id="btn_add" type="button" class="btn btn-default" v-on:click="del">
+                    <span class="glyphicon glyphicon-pencil"></span>修改资源
                 </button>
             </div>
             <!--表格工具条 end-->
@@ -86,8 +86,143 @@
         <div th:replace="commons/footer :: footer"></div>
     </div>
 </section>
+<!--addUser begin-->
+<div class="modal fade" id="addResourceDialog" tabindex="-1" role="dialog" aria-labelledby="resourceModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal add-form-rule" id="addResourceForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="resourceModalLabel">新增资源</h4>
+                    <div id="hiddenMethod"></div>
+                </div>
+                <div style="padding-right:1px;">
+                    <div style="height:455px;">
+
+                        <div class="modal-body" style="width: 100%;">
+                            <input placeholder="" name="resourceId" id="resourceId"
+                                   value="" type="hidden">
+                            <div class="form-group">
+			          				<span class="col-sm-3 control-label">
+										类型
+			          				</span>
+                                <div class="col-sm-6">
+                                    <label class="radio-inline">
+                                        <input placeholder="" name="resourceType"
+                                               type="radio" value="0" checked v-model="menu.resourceType"/>目录
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input placeholder="" name="resourceType"
+                                               type="radio" value="1" v-model="menu.resourceType"/>菜单
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input placeholder="" name="resourceType"
+                                               type="radio" value="2" v-model="menu.resourceType"/>按钮
+                                    </label>
+                                </div>
+                                <span class="col-sm-3" id="roleNameInfo"></span>
+                            </div>
+                            <div class="form-group">
+			          				<span class="col-sm-3 control-label">
+										资源名称
+			          				</span>
+                                <div class="col-sm-6">
+                                    <input placeholder="" v-model="menu.resourceName" name="resourceName"
+                                           id="resourceName" class="form-control"
+                                           type="text">
+                                </div>
+                                <span class="col-sm-3" id="resourceNameInfo"></span>
+                            </div>
+                            <div class="form-group">
+			          				<span class="col-sm-3 control-label">
+										上级资源
+			          				</span>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" style="cursor:pointer;"
+                                           name="parentName"
+                                           v-model="menu.parentName" v-on:click="resourceTree" readonly="readonly"
+                                           placeholder="CRM系统"/>
+                                </div>
+                                <span class="col-sm-3" id="parentNameInfo"></span>
+                            </div>
+                            <div v-if="menu.resourceType == 1" class="form-group">
+			          				<span class="col-sm-3 control-label">
+										菜单URL
+			          				</span>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="url" v-model="menu.url"
+                                           placeholder="菜单URL"/>
+                                </div>
+                                <span class="col-sm-3" id="urlInfo"></span>
+                            </div>
+                            <div v-if="menu.resourceType == 1 || menu.resourceType == 2" class="form-group">
+			          				<span class="col-sm-3 control-label">
+										授权标识
+			          				</span>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="expression"
+                                           v-model="menu.expression"
+                                           placeholder="多个用逗号分隔，如：user:list,user:create"/>
+                                </div>
+                                <span class="col-sm-3" id="expressionInfo"></span>
+                            </div>
+                            <div class="form-group">
+			          				<span class="col-sm-3 control-label">
+										状态
+			          				</span>
+                                <div class="col-sm-6">
+                                    <select v-model="menu.status" id="m_status" class="form-control form-control-select">
+                                        <option value="-1">全部</option>
+                                        <option value="0">未启用</option>
+                                        <option value="1">启用</option>
+                                        <option value="2">锁定</option>
+                                        <option value="3">删除</option>
+                                    </select>
+                                </div>
+                                <span class="col-sm-3" id="expressionInfo"></span>
+                            </div>
+                            <div class="form-group">
+			          				<span class="col-sm-3 control-label">
+										排序号
+			          				</span>
+                                <div class="col-sm-6">
+                                    <input type="number" class="form-control" v-model="menu.resourceOrder"
+                                           placeholder="排序号"/>
+                                </div>
+                                <span class="col-sm-3" id="resourceOrderInfo"></span>
+                            </div>
+                            <div class="form-group">
+			          				<span class="col-sm-3 control-label">
+										图标
+			          				</span>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" v-model="menu.icon" placeholder="菜单图标"/>
+                                    <code style="margin-top:4px;display: block;">获取图标：http://fontawesome.io/icons/</code>
+                                </div>
+                                <span class="col-sm-3" id="iconInfo"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="submit-btn" class="btn btn-info btn-sm submit-btn"
+                            v-on:click="saveOrUpdate">提交
+                    </button>
+                    <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 选择菜单 -->
+<div id="menuLayer" style="display: none;padding:10px;">
+    <ul id="menuTree" class="ztree"></ul>
+</div>
 <div th:replace="commons/onload_js :: onloadJS"></div>
-<script th:src="@{/lib/treegrid/treegrid.js}" src="lib/treegrid/treegrid.js"></script>
+<!--<script th:src="@{/lib/treegrid/treegrid.js}" src="lib/treegrid/treegrid.js"></script>-->
 <script th:src="@{/js/security/permission.js}" src="js/security/permission.js"></script>
 </body>
 </html>

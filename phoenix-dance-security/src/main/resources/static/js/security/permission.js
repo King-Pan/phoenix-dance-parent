@@ -20,7 +20,7 @@ Menu.initColumn = function () {
         {title: '图标', field: 'icon', align: 'center', valign: 'middle', sortable: true, width: '80px', formatter: function(item, index){
                 return item.icon == null ? '' : '<span style="line-height: 19px;margin-left:22px;"><i class="'+item.icon+' fa-lg"></i></span>';
             }},
-        {title: '类型', field: 'permissionType', align: 'center', valign: 'middle', sortable: true, width: '100px', formatter: function(item, index){
+        {title: '类型', field: 'permissionType', align: 'center', valign: 'middle', sortable: true, width: '80px', formatter: function(item, index){
                 if(item.permissionType === "0"){
                     return '<span class="label label-primary" style="line-height: 19px;margin-left:22px;">目录</span>';
                 }
@@ -32,7 +32,7 @@ Menu.initColumn = function () {
                 }
             }},
         {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '60px'},
-        {title: '状态', field: 'status', align: 'center', valign: 'middle', sortable: true, width: '60px',formatter: function (item,index) {
+        {title: '状态', field: 'status', align: 'center', valign: 'middle', sortable: true, width: '80px',formatter: function (item,index) {
                 var status;
                 var value = item.status;
                 if(value){
@@ -82,7 +82,7 @@ var setting = {
 
 var vm = new Vue({
     // 选项
-    el:'#resourceVm',
+    el:'#permissionVm',
     data:{
         showList: true,
         title: null,
@@ -97,7 +97,7 @@ var vm = new Vue({
     methods:{
         getMenu: function(menuId){
             //加载菜单树
-            $.get(baseUrl+"resource/select", function(r){
+            $.get($basicPathVal+"resource/select", function(r){
                 ztree = $.fn.zTree.init($("#menuTree"), setting, r.data);
                 var node = ztree.getNodeByParam("resourceId", vm.menu.parentId);
                 if(node){
@@ -129,7 +129,7 @@ var vm = new Vue({
                 return ;
             }
 
-            $.get(baseUrl+"resource/"+resourceId, function(r){
+            $.get($basicPathVal+"resource/"+resourceId, function(r){
                 vm.showList = false;
                 vm.title = "修改";
                 vm.menu = r.data;
@@ -154,7 +154,7 @@ var vm = new Vue({
                     return;
                 }
                 $.ajax({
-                    url: baseUrl+ '/resource/' + resourceId,
+                    url: $basicPathVal+ '/resource/' + resourceId,
                     type: 'delete',
                     dataType: 'json',
                     contentType: "application/json;charset=UTF-8",
@@ -178,9 +178,9 @@ var vm = new Vue({
             var url;
             var method = 'post';
             if(vm.menu.resourceId == null){
-                url = baseUrl +"resource";
+                url = $basicPathVal +"resource";
             }else{
-                url = baseUrl +"resource/"+ vm.menu.resourceId;
+                url = $basicPathVal +"resource/"+ vm.menu.resourceId;
                 vm.menu._method = "put";
                 method = 'put';
             }
