@@ -42,7 +42,7 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionRepository.findAll(new Specification<Permission>() {
             @Override
             public Predicate toPredicate(Root<Permission> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path<String> permissionNamePath = root.get("resourceName");
+                Path<String> permissionNamePath = root.get("permissionName");
                 Path<String> statusPath = root.get("status");
                 List<Predicate> wherePredicate = new ArrayList<>();
                 if (StringUtils.isNoneBlank(permissionName)) {

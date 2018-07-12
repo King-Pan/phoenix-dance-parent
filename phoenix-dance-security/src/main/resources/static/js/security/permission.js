@@ -10,7 +10,7 @@ Menu.initColumn = function () {
     var columns = [
         {field: 'selectItem', radio: true},
         {title: '资源ID', field: 'permissionId', visible: false, align: 'center', valign: 'middle', width: '80px'},
-        {title: '资源名称', field: 'name', align: 'center', valign: 'middle', sortable: true, width: '180px'},
+        {title: '资源名称', field: 'permissionName', align: 'center', valign: 'middle', sortable: true, width: '180px'},
         {title: '上级资源', field: 'parentName', align: 'center', valign: 'middle', sortable: true, width: '100px',formatter:function (item, index) {
                 if(!item.parentName){
                     return "-";
@@ -20,19 +20,34 @@ Menu.initColumn = function () {
         {title: '图标', field: 'icon', align: 'center', valign: 'middle', sortable: true, width: '80px', formatter: function(item, index){
                 return item.icon == null ? '' : '<span style="line-height: 19px;margin-left:22px;"><i class="'+item.icon+' fa-lg"></i></span>';
             }},
-        {title: '类型', field: 'resourceType', align: 'center', valign: 'middle', sortable: true, width: '100px', formatter: function(item, index){
-                if(item.resourceType === "0"){
+        {title: '类型', field: 'permissionType', align: 'center', valign: 'middle', sortable: true, width: '100px', formatter: function(item, index){
+                if(item.permissionType === "0"){
                     return '<span class="label label-primary" style="line-height: 19px;margin-left:22px;">目录</span>';
                 }
-                if(item.resourceType === "1"){
+                if(item.permissionType === "1"){
                     return '<span class="label label-success" style="line-height: 19px;margin-left:22px;">菜单</span>';
                 }
-                if(item.resourceType === "2"){
+                if(item.permissionType === "2"){
                     return '<span class="label label-warning" style="line-height: 19px;margin-left:22px;">按钮</span>';
                 }
             }},
         {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '100px'},
-        {title: '状态', field: 'status', align: 'center', valign: 'middle', sortable: true, width: '100px',formatter: statusFormat},
+        {title: '状态', field: 'status', align: 'center', valign: 'middle', sortable: true, width: '100px',formatter: function (item,index) {
+                var status;
+                var value = item.status;
+                if(value){
+                    if(value==0){
+                        status = '<span class="label label-warning">禁用</span>';
+                    }else if(value==1){
+                        status = '<span class="label label-success">启用</span>';
+                    }else if(value==2){
+                        status = '<span class="label label-danger">删除</span>';
+                    }else{
+                        status ='<span class="label label-info">未知的状态</span>';
+                    }
+                }
+                return status;
+            }},
         {title: '菜单URL', field: 'url', align: 'center', valign: 'middle', sortable: true, width: '160px',formatter:function (item,index) {
                 if(!item.url){
                     return "-";
@@ -253,12 +268,13 @@ function getResourceId () {
 }
 
 $(function () {
-    var table = new TreeTable(Menu.id,  $basicPathVal + "permission/", Menu.initColumn());
+    var table = new TreeTable(Menu.id,  $basicPathVal + "permissions/", Menu.initColumn());
     table.setExpandColumn(2);
     table.setIdField("permissionId");
     table.setCodeField("permissionId");
     table.setParentCodeField("parentId");
     table.setExpandAll(true);
+    //table.method = 'post';
     table.init();
     Menu.table = table;
     $("#status").select2({
