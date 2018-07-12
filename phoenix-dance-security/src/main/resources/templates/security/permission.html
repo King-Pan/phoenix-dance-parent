@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<head th:replace="commons/meta_head :: metaHead(title='快速开发平台 | 角色管理')">
+<head th:replace="commons/meta_head :: metaHead(title='快速开发平台 | 权限管理')">
 </head>
 <body id="rolePage">
 <!--导入header-->
@@ -9,7 +9,7 @@
 <section class="Hui-article-box">
     <nav class="breadcrumb"><i class="Hui-iconfont"></i> <a th:href="@{/}" class="maincolor">首页</a>
         <span class="c-999 en">&gt;</span>
-        <span class="c-666">角色管理</span>
+        <span class="c-666">权限管理</span>
         <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
            href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
     <div class="Hui-article">
@@ -29,7 +29,7 @@
                     <div class="form-group" style="margin:12px 0 0 0;">
                         <div class="col-md-4">
                             <span class="control-label col-sm-4">
-                                 角色编码
+                                 资源名称
                             </span>
                             <div class="col-sm-8" style="margin-bottom:12px;">
                                 <input type="text" class="form-control" id="search_roleCode" name="search_userName" placeholder="请输入角色编码">
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-md-4">
                             <span class="control-label col-sm-4">
-                                 角色名称
+                                 资源类型
                             </span>
                             <div class="col-sm-8" style="margin-bottom:12px;">
                                 <input type="text" class="form-control" id="search_roleName" name="search_roleName" placeholder="请输入角色名称">
@@ -74,13 +74,20 @@
             </div>
             <!--表格工具条 end-->
             <!--表格 begin-->
-            <table id="roleTable"  class="table table-condensed"></table>
+            <table id="permissionTable" data-mobile-responsive="true" data-click-to-select="true">
+                <thead>
+                <tr>
+                    <th data-field="selectItem" data-checkbox="true"></th>
+                </tr>
+                </thead>
+            </table>
             <!--表格 end-->
         </div>
         <div th:replace="commons/footer :: footer"></div>
     </div>
 </section>
 <div th:replace="commons/onload_js :: onloadJS"></div>
-<script th:src="@{/js/security/role.js}" src="js/security/role.js"></script>
+<script th:src="@{/lib/treegrid/treegrid.js}" src="lib/treegrid/treegrid.js"></script>
+<script th:src="@{/js/security/permission.js}" src="js/security/permission.js"></script>
 </body>
 </html>

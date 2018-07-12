@@ -39,10 +39,10 @@ public class RoleController {
     private RoleService roleService;
 
     @ApiOperation(
-            value = "用户管理页面", notes = "进入用户管理页面"
+            value = "角色管理页面", notes = "进入角色管理页面"
     )
     @GetMapping("role/")
-    @SysLog(module = "用户模块", operation = "进入用户管理页面")
+    @SysLog(module = "角色模块", operation = "进入角色管理页面")
     public ModelAndView rolePage() {
         return new ModelAndView("security/role");
     }
@@ -55,7 +55,7 @@ public class RoleController {
      * @param pageable 分页参数
      * @return 分页信息
      */
-    @ApiOperation(value = "登录处理", notes = "登录处理")
+    @ApiOperation(value = "角色分页查询", notes = "角色分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleInfo", value = "查询参数", dataType = "RoleInfo", paramType = "query"),
             @ApiImplicitParam(name = "pageable", value = "分页参数", dataType = "Pageable", paramType = "query")
@@ -76,12 +76,13 @@ public class RoleController {
      * @param pageable 分页参数
      * @return 分页信息
      */
-    @ApiOperation(value = "登录处理", notes = "登录处理")
+    @ApiOperation(value = "未分配的角色信息", notes = "未分配的角色信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户ID", dataType = "Long", paramType = "query"),
             @ApiImplicitParam(name = "pageable", value = "分页参数", dataType = "Pageable", paramType = "query")
     })
     @GetMapping("role/{userId}")
+    @SysLog(module = "角色模块", operation = "分页查询未分配的角色信息")
     public Object getNoSelectRole(@PathVariable("userId")Long userId,@RequestParam("name")String name, @PageableDefault Pageable pageable) {
         if (log.isDebugEnabled()) {
             log.debug("查询参数 {}", userId);

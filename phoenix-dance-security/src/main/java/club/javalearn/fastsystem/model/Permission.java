@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ import java.util.Set;
 @ApiModel(value = "Permission",description = "权限信息")
 public class Permission implements Serializable {
 
-    public static Long serialVersionUID = 1l;
+    public static Long serialVersionUID = 1L;
 
     /**
      * 权限编码
@@ -40,7 +41,7 @@ public class Permission implements Serializable {
      * 权限名称
      */
     @Column(length = 100)
-    private String name;
+    private String permissionName;
 
     /**
      * 权限描述
@@ -55,18 +56,49 @@ public class Permission implements Serializable {
     private String url;
 
     /**
+     * 图标
+     */
+    private String icon;
+
+    /**
+     * 资源表达式
+     */
+    private String expression;
+
+    /**
      * 权限类型: 0: 目录 1：链接 2:按钮
      */
     @Column(length = 1)
-    private String type;
-
-    @Column(length = 10)
-    private String method;
+    private String permissionType;
 
     /**
      * 权限父节点编码
      */
     private Long parentId;
+
+    /**
+     * 上级资源名称
+     */
+    private String parentName;
+
+    /**
+     * 排序
+     */
+    private Integer orderNum;
+
+    /**
+     * 状态
+     */
+    private String status;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
 
     @ManyToMany(mappedBy = "permissions",fetch = FetchType.LAZY)

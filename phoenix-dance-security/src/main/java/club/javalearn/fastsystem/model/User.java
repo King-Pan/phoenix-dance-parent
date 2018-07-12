@@ -35,7 +35,7 @@ import java.util.*;
 @SelectBeforeUpdate
 public class User implements Serializable {
 
-    public static Long serialVersionUID = 1l;
+    public static Long serialVersionUID = 1L;
 
     /**
      * 用戶编码-自增长策略

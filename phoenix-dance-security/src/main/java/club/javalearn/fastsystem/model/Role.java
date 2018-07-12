@@ -30,7 +30,7 @@ import java.util.Set;
 @ApiModel(value = "Role",description = "角色信息")
 public class Role implements Serializable {
 
-    public static Long serialVersionUID = 1l;
+    public static Long serialVersionUID = 1L;
 
     /**
      * 角色编码
