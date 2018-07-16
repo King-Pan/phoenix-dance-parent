@@ -1,121 +1,91 @@
-var Menu = {
-    id: "permissionTable",
-    table: null,
-    layerIndex: -1
-};
-/**
- * 初始化表格的列
- */
-Menu.initColumn = function () {
-    var columns = [
-        {field: 'selectItem', radio: true},
-        {title: '资源ID', field: 'permissionId', visible: false, align: 'center', valign: 'middle', width: '80px'},
-        {title: '资源名称', field: 'permissionName', align: 'center', valign: 'middle', sortable: true, width: '120px'},
-        {title: '上级资源', field: 'parentName', align: 'center', valign: 'middle', sortable: true, width: '100px',formatter:function (item, index) {
-                if(!item.parentName){
-                    return "-";
-                }
-                return item.parentName;
-            }},
-        {title: '图标', field: 'icon', align: 'center', valign: 'middle', sortable: true, width: '80px', formatter: function(item, index){
-                return item.icon == null ? '' : '<span style="line-height: 19px;margin-left:22px;"><i class="'+item.icon+' fa-lg"></i></span>';
-            }},
-        {title: '类型', field: 'permissionType', align: 'center', valign: 'middle', sortable: true, width: '80px', formatter: function(item, index){
-                if(item.permissionType === "0"){
-                    return '<span class="label label-primary" style="line-height: 19px;margin-left:22px;">目录</span>';
-                }
-                if(item.permissionType === "1"){
-                    return '<span class="label label-success" style="line-height: 19px;margin-left:22px;">菜单</span>';
-                }
-                if(item.permissionType === "2"){
-                    return '<span class="label label-warning" style="line-height: 19px;margin-left:22px;">按钮</span>';
-                }
-            }},
-        {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '60px'},
-        {title: '状态', field: 'status', align: 'center', valign: 'middle', sortable: true, width: '80px',formatter: function (item,index) {
-                var status;
-                var value = item.status;
-                if(value){
-                    if(value==0){
-                        status = '<span class="label label-warning" style="line-height: 19px;margin-left:22px;">禁用</span>';
-                    }else if(value==1){
-                        status = '<span class="label label-success" style="line-height: 19px;margin-left:22px;">启用</span>';
-                    }else if(value==2){
-                        status = '<span class="label label-danger" style="line-height: 19px;margin-left:22px;">删除</span>';
-                    }else{
-                        status ='<span class="label label-info" style="line-height: 19px;margin-left:22px;">未知的状态</span>';
-                    }
-                }
-                return status;
-            }},
-        {title: '菜单URL', field: 'url', align: 'center', valign: 'middle', sortable: true, width: '160px',formatter:function (item,index) {
-                if(!item.url){
-                    return "-";
-                }
-                return item.url;
-            }},
-        {title: '授权标识', field: 'expression', align: 'center', valign: 'middle', width: '80px', sortable: true,formatter:function (item,index) {
-                if(!item.expression){
-                    return "-";
-                }
-                return item.expression;
-            }}];
-    return columns;
-};
-
-var ztree;
-
-var setting = {
-    data: {
-        simpleData: {
-            enable: true,
-            idKey: "permissionId",
-            pIdKey: "parentId",
-            rootPId: -1
-        },
-        key: {
-            name: "permissionName",
-            url: "nourl"
-        }
-    }
-};
-
 var vm = new Vue({
     // 选项
     el:'#permissionVm',
     data:{
         showList: true,
         title: null,
-        menu:{
+        permission:{
             parentName:null,
             parentId:1,
-            resourceType:1,
+            permissionType:1,
             orderNum:0
         },
         bootstrapTable: null
     },
     methods:{
-        getMenu: function(menuId){
+        getMenu: function(){
             //加载菜单树
-            $.get($basicPathVal+"resource/select", function(r){
+            $.get($basicPathVal+"permission/select", function(r){
                 ztree = $.fn.zTree.init($("#menuTree"), setting, r.data);
-                var node = ztree.getNodeByParam("resourceId", vm.menu.parentId);
+                var node = ztree.getNodeByParam("permissionId", vm.permission.parentId);
                 if(node){
                     ztree.selectNode(node);
-                    vm.menu.parentName = node.resourceName;
+                    vm.permission.parentName = node.permissionName;
                 }
             })
         },
-        add: function(){
-            vm.title = "新增";
-            vm.menu = {parentName:null,parentId:1,resourceType:1,resourceOrder:0};
+        add: function(flag, permissionId){
+            var row;
+            if (flag) {
+                if (permissionId) {
+                    row = $('#permissionTable').bootstrapTable('getRowByUniqueId', permissionId);
+                } else {
+                    var dataList = $('#permissionTable').bootstrapTable('getSelections');
+                    if (dataList.length !== 1) {
+                        layer.alert('请选择一条数据进行修改', {icon: 6});
+                        return;
+                    }
+                    row = dataList[0];
+                }
+            }
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-rim', //加上边框
+                area: ['650px', '520px'], //宽高
+                content: jQuery("#permissionForm").html(),
+                btn: ['取消', '确定'],
+                btn1: function (index) {
+                    layer.close(index);
+                },
+                btn2: function () {
+                    $("#infoForm").bootstrapValidator('validate');//提交验证
+                    if ($("#infoForm").data('bootstrapValidator').isValid()) {//获取验证结果，如果成功，执行下面代码
+                        $("#roleCode").removeAttr("disabled");
+                        var postData = $("#infoForm").serializeJson();//表单序列化
+                        $("#roleCode").attr("disabled", "disabled");
+                        if (postData.userId) {
+                            console.log(postData);
+                            console.log(postData.userId);
+                            postData._method = 'PUT';
+                        }
+                        $.ajax({
+                            url: $basicPathVal + "role/",
+                            type: 'post',
+                            dataType: 'json',
+                            data: postData,
+                            success: function (data) {
+                                layer.alert(data.msg, {icon: 6});
+                                if (data.status === 200) {
+                                    $("#roleTable").bootstrapTable('refresh');
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                        })
+                    } else {
+                        layer.alert('格式不正确，请按照正确的格式填写', {icon: 6});
+                        return false;//禁止关闭窗口
+                    }
+                }
+            });
+            $("#status").select2();
+            if (flag) {
+                $('#infoForm').setForm(row);
+            } else {
+                //$("#roleCode").removeAttr("disabled");
+            }
             vm.getMenu();
-            $("#resourceModalLabel").html("新增资源");
-            $("#addResourceForm")[0].reset();
-            $("#resourceId").val('');
-            $("#hiddenMethod").empty();
-            $("#addResourceDialog").modal("show");
-            vm.initStatus();
         },
         initStatus:function () {
             $("#m_status").select2({
@@ -235,8 +205,8 @@ var vm = new Vue({
                 btn1: function (index) {
                     var node = ztree.getSelectedNodes();
                     //选择上级菜单
-                    vm.menu.parentId = node[0].resourceId;
-                    vm.menu.parentName = node[0].resourceName;
+                    vm.permission.parentId = node[0].permissionId;
+                    vm.permission.parentName = node[0].permissionName;
 
                     layer.close(index);
                 }
@@ -258,7 +228,7 @@ var vm = new Vue({
 });
 
 function getResourceId () {
-    var selected = $('#resourceTable').bootstrapTreeTable('getSelections');
+    var selected = $('#permissionTable').bootstrapTreeTable('getSelections');
     if (selected.length === 0) {
         alert("请选择一条记录");
         return false;
@@ -266,6 +236,23 @@ function getResourceId () {
         return selected[0].id;
     }
 }
+
+var ztree;
+
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "permissionId",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            name: "permissionName",
+            url: "nourl"
+        }
+    }
+};
 
 $(function () {
     var table = new TreeTable(Menu.id,  $basicPathVal + "permissions/", Menu.initColumn());
@@ -283,3 +270,68 @@ $(function () {
     });
     vm.initStatus();
 });
+
+var Menu = {
+    id: "permissionTable",
+    table: null,
+    layerIndex: -1
+};
+/**
+ * 初始化表格的列
+ */
+Menu.initColumn = function () {
+    var columns = [
+        {field: 'selectItem', radio: true},
+        {title: '资源ID', field: 'permissionId', visible: false, align: 'center', valign: 'middle', width: '80px'},
+        {title: '资源名称', field: 'permissionName', align: 'center', valign: 'middle', sortable: true, width: '120px'},
+        {title: '上级资源', field: 'parentName', align: 'center', valign: 'middle', sortable: true, width: '100px',formatter:function (item, index) {
+                if(!item.parentName){
+                    return "-";
+                }
+                return item.parentName;
+            }},
+        {title: '图标', field: 'icon', align: 'center', valign: 'middle', sortable: true, width: '80px', formatter: function(item, index){
+                return item.icon == null ? '' : '<span style="line-height: 19px;margin-left:22px;"><i class="'+item.icon+' fa-lg"></i></span>';
+            }},
+        {title: '类型', field: 'permissionType', align: 'center', valign: 'middle', sortable: true, width: '80px', formatter: function(item, index){
+                if(item.permissionType === "0"){
+                    return '<span class="label label-primary" style="line-height: 19px;margin-left:22px;">目录</span>';
+                }
+                if(item.permissionType === "1"){
+                    return '<span class="label label-success" style="line-height: 19px;margin-left:22px;">菜单</span>';
+                }
+                if(item.permissionType === "2"){
+                    return '<span class="label label-warning" style="line-height: 19px;margin-left:22px;">按钮</span>';
+                }
+            }},
+        {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '60px'},
+        {title: '状态', field: 'status', align: 'center', valign: 'middle', sortable: true, width: '80px',formatter: function (item,index) {
+                var status;
+                var value = item.status;
+                if(value){
+                    if(value==0){
+                        status = '<span class="label label-warning" style="line-height: 19px;margin-left:22px;">禁用</span>';
+                    }else if(value==1){
+                        status = '<span class="label label-success" style="line-height: 19px;margin-left:22px;">启用</span>';
+                    }else if(value==2){
+                        status = '<span class="label label-danger" style="line-height: 19px;margin-left:22px;">删除</span>';
+                    }else{
+                        status ='<span class="label label-info" style="line-height: 19px;margin-left:22px;">未知的状态</span>';
+                    }
+                }
+                return status;
+            }},
+        {title: '菜单URL', field: 'url', align: 'center', valign: 'middle', sortable: true, width: '160px',formatter:function (item,index) {
+                if(!item.url){
+                    return "-";
+                }
+                return item.url;
+            }},
+        {title: '授权标识', field: 'expression', align: 'center', valign: 'middle', width: '80px', sortable: true,formatter:function (item,index) {
+                if(!item.expression){
+                    return "-";
+                }
+                return item.expression;
+            }}];
+    return columns;
+};

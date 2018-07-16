@@ -1,6 +1,7 @@
 package club.javalearn.fastsystem.web.controller;
 
 import club.javalearn.fastsystem.aspect.SysLog;
+import club.javalearn.fastsystem.common.ServerResponse;
 import club.javalearn.fastsystem.model.Permission;
 import club.javalearn.fastsystem.service.PermissionService;
 import io.swagger.annotations.Api;
@@ -45,5 +46,19 @@ public class PermissionController {
     public List<Permission> query(@RequestParam(required = false,name = "permissionName") String permissionName,
                                   @RequestParam(required = false,name = "status",defaultValue = "1")String status) {
         return permissionService.getList(permissionName,status);
+    }
+
+
+    @GetMapping(value = "permission/select")
+    @ApiOperation(value = "选择上级资源")
+    public ServerResponse<List<Permission>> select() {
+        ServerResponse<List<Permission>> response;
+        try {
+            response = ServerResponse.createBySuccess(permissionService.getList());
+        }catch (Exception e){
+            log.error("选择上级资源失败",e);
+            response = ServerResponse.createByErrorMessage("选择上级资源失败:"+e.getMessage());
+        }
+        return response;
     }
 }
