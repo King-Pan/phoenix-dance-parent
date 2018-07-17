@@ -1,13 +1,14 @@
 var vm = new Vue({
     // 选项
     el:'#permissionVm',
-    data:{
+    data: {
         showList: true,
         title: null,
         permission:{
-            parentName:null,
+            parentName:'系统管理',
             parentId:1,
-            permissionType:1,
+            permissionName: '系统管理',
+            permissionType:2,
             orderNum:0
         },
         bootstrapTable: null
@@ -20,7 +21,7 @@ var vm = new Vue({
                 var node = ztree.getNodeByParam("permissionId", vm.permission.parentId);
                 if(node){
                     ztree.selectNode(node);
-                    vm.permission.parentName = node.permissionName;
+                    vm.$data.permission.parentName = node.permissionName;
                 }
             })
         },
@@ -191,8 +192,8 @@ var vm = new Vue({
             };
             Menu.table.refresh(param);
         },
-        resourceTree: function(){
-            layer.open({
+        resourceTree (){
+            var index = layer.open({
                 type: 1,
                 offset: '50px',
                 skin: 'layui-layer-molv',
@@ -202,11 +203,11 @@ var vm = new Vue({
                 shadeClose: false,
                 content: jQuery("#menuLayer"),
                 btn: ['确定', '取消'],
-                btn1: function (index) {
+                btn1: () => {
                     var node = ztree.getSelectedNodes();
                     //选择上级菜单
-                    vm.permission.parentId = node[0].permissionId;
-                    vm.permission.parentName = node[0].permissionName;
+                    vm.$data.permission.parentId = node[0].permissionId;
+                    vm.$data.permission.parentName = node[0].permissionName;
 
                     layer.close(index);
                 }
