@@ -101,7 +101,7 @@ public class Permission implements Serializable {
     private Date updateTime;
 
 
-    @ManyToMany(mappedBy = "permissions",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "permissions",fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 

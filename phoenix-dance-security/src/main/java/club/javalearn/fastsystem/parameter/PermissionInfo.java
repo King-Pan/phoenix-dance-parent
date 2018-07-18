@@ -3,7 +3,9 @@ package club.javalearn.fastsystem.parameter;
 import club.javalearn.fastsystem.model.Permission;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -79,6 +81,8 @@ public class PermissionInfo {
      * 更新时间
      */
     private Date updateTime;
+
+    private List<PermissionInfo> childPermission = new ArrayList<>();
 
 
     public Permission convertPermission(){

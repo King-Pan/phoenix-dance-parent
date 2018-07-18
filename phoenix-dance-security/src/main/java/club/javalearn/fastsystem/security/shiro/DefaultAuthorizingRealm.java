@@ -66,7 +66,7 @@ public class DefaultAuthorizingRealm extends AuthorizingRealm {
                 Set<Permission> permissionList = role.getPermissions();
                 if (CollectionUtils.isNotEmpty(permissionList)) {
                     for (Permission permission : permissionList) {
-                        permissions.add(permission.getUrl());
+                        permissions.add(permission.getExpression());
                     }
                 }
             }

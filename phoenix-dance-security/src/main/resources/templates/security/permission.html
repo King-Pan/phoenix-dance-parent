@@ -57,13 +57,13 @@
                 <!--查询区域 end-->
                 <!--表格工具条 begin-->
                 <div id="toolbar" class="btn-group" style="margin-top: 20px">
-                    <button id="btn_add" type="button" class="btn btn-default" onclick="add()">
+                    <button shiro:hasPermission="permission:add" type="button" class="btn btn-default" onclick="add()">
                         <span class="glyphicon glyphicon-plus"></span>添加资源
                     </button>
-                    <button id="btn_add" type="button" class="btn btn-default" onclick="add(true)">
+                    <button shiro:hasPermission="permission:modify"  type="button" class="btn btn-default" onclick="add(true)">
                         <span class="glyphicon glyphicon-pencil"></span>修改资源
                     </button>
-                    <button id="btn_batchDel" type="button" class="btn btn-default" onclick="del()">
+                    <button shiro:hasPermission="permission:delete"  type="button" class="btn btn-default" onclick="del()">
                         <span class="glyphicon glyphicon-trash"></span>删除资源
                     </button>
 

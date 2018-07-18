@@ -77,12 +77,12 @@ public class Role implements Serializable {
      */
     private Date updateTime;
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "sys_role_permission",joinColumns ={@JoinColumn(name = "role_id", referencedColumnName = "roleId")},
             inverseJoinColumns =  {@JoinColumn(name = "permission_id", referencedColumnName = "permissionId")})
     @JsonIgnore

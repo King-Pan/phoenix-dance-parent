@@ -24,6 +24,14 @@ public interface PermissionService {
 
 
     /**
+     * 查询用户所有的权限
+     * @param userId 状态
+     * @return 权限集合
+     */
+    List<Permission> getList(Long userId);
+
+
+    /**
      * 过滤查询所有的权限
      * @param permissionName 权限名称
      * @param status 状态

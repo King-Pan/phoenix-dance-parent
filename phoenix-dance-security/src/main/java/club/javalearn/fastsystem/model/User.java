@@ -110,7 +110,7 @@ public class User implements Serializable {
     @Column(length = 10)
     private String status;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "sys_user_role",joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "userId")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "roleId")})
     @JsonIgnore

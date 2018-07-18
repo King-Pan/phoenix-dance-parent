@@ -39,6 +39,11 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    public List<Permission> getList(Long userId) {
+        return permissionRepository.getListByUserId(userId);
+    }
+
+    @Override
     public List<Permission> getList(String permissionName, String status) {
         Sort sort = new Sort(Sort.Direction.ASC, "orderNum");
         return permissionRepository.findAll(new Specification<Permission>() {

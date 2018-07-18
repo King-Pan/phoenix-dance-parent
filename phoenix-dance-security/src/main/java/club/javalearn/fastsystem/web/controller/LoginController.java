@@ -1,6 +1,7 @@
 package club.javalearn.fastsystem.web.controller;
 
 import club.javalearn.fastsystem.model.User;
+import club.javalearn.fastsystem.service.PermissionService;
 import club.javalearn.fastsystem.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -38,6 +39,10 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+
+
+    @Autowired
+    private PermissionService permissionService;
 
     /**
      * 进入登录页面
@@ -88,6 +93,7 @@ public class LoginController {
             User user = (User) SecurityUtils.getSubject().getPrincipal();
 
             session.setAttribute("user", user);
+            session.setAttribute("menus",permissionService.getList(user.getUserId()));
 
             userService.updateLastLoginTime(user);
 
