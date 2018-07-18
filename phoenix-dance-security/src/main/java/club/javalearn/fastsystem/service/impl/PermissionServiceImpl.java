@@ -28,6 +28,8 @@ import java.util.List;
 @Service
 public class PermissionServiceImpl implements PermissionService {
 
+
+
     @Autowired
     private PermissionRepository permissionRepository;
 
@@ -74,6 +76,10 @@ public class PermissionServiceImpl implements PermissionService {
             p.setDescription(permission.getDescription());
             p.setPermissionType(permission.getPermissionType());
             p.setPermissionName(permission.getPermissionName());
+            p.setOrderNum(permission.getOrderNum());
+            p.setParentName(permission.getParentName());
+            p.setParentId(permission.getParentId());
+            p.setStatus(permission.getStatus());
             result = permissionRepository.save(p);
         }else{
             permission.setCreateTime(new Date());
@@ -81,6 +87,16 @@ public class PermissionServiceImpl implements PermissionService {
             result = permissionRepository.save(permission);
         }
         return result;
+    }
+
+    @Override
+    public int countChildNum(Long parentId) {
+        return permissionRepository.countByParentId(parentId);
+    }
+
+    @Override
+    public Permission get(Long permissionId) {
+        return permissionRepository.findByPermissionId(permissionId);
     }
 
     @Override

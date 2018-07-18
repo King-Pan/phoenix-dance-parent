@@ -38,6 +38,21 @@ public interface PermissionService {
      */
     Permission save(PermissionInfo permissionInfo);
 
+
+    /**
+     * 通过父类ID获取子节点个数
+     * @param parentId 父节点ID
+     * @return 个数
+     */
+    int countChildNum(Long parentId);
+
+
+    /**
+     * 通过ID获取权限信息
+     * @param permissionId 权限信息ID
+     * @return 权限信息
+     */
+    Permission get(Long permissionId);
     /**
      * 状态删除权限
      * @param permissionIds 权限ID

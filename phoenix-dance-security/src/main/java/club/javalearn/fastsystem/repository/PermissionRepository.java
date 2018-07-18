@@ -24,6 +24,13 @@ import java.util.List;
 public interface PermissionRepository extends JpaRepository<Permission,Long>,QuerydslPredicateExecutor<Permission>,JpaSpecificationExecutor<Permission> {
 
     /**
+     * 通过ID获取权限信息
+     * @param permissionId 权限信息Id
+     * @return 权限信息
+     */
+    Permission findByPermissionId(Long permissionId);
+
+    /**
      * 通过parentId 统计该节点下的字节点是否为空
      * @param parentId 父节点ID
      * @return 子节点个数

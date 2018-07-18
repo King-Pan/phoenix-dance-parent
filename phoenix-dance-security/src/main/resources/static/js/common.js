@@ -144,3 +144,5 @@ $.fn.setForm = function(jsonValue){
         }
     })
 }
+
+$.fn.modal.Constructor.prototype.enforceFocus = function() {};

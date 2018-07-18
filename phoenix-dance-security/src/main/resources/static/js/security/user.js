@@ -342,8 +342,6 @@ function validatorUser() {
                         regexp: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
                         message: '所输入的字符不符要求【必须是字母、数字和中文字符】'
                     }
-
-
                 }
             },
             phoneNum: {
