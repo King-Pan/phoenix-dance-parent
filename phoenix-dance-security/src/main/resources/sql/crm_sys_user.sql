@@ -1,0 +1,31 @@
+CREATE TABLE crm.sys_user
+(
+    user_id bigint(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    create_time datetime,
+    email varchar(50),
+    img_url varchar(256),
+    last_login_time datetime,
+    nick_name varchar(20) NOT NULL,
+    password varchar(100),
+    phone_num varchar(255),
+    status varchar(10),
+    user_name varchar(56) NOT NULL,
+    salt varchar(128) NOT NULL,
+    update_time datetime
+);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (1, '2018-06-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-07-18 17:25:33', 'king-pan', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'admin123', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (2, '2018-06-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'king-pan', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'admin124', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (3, '2018-06-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', '玛利亚', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'admin1256', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (4, '2018-06-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', '张三', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'zhangsanfeng', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (5, '2018-06-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'lan', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'lisi', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (6, '2018-06-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'mali', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'zhangli', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (7, '2017-06-06 01:58:52', 'a56@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'sicle', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'zhanglang', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (8, '2018-06-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'king', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'wangquan', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (9, '2018-06-08 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'pan', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'woangm', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (10, '2018-07-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'king-pan', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'wangzjsdfe', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (11, '2018-07-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'king-pan', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'tianjing', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (12, '2018-07-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'king-pan', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'xiaofenghuang', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (13, '2018-07-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'king-pan', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'lige', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (14, '2018-07-06 01:58:52', 'a@qq.com', 'http://baidu.com', '2018-06-06 01:59:06', 'king-pan', '34413c4c859943afc91ac8e0aeb73de20177894b', '18000000000', '1', 'tianjincao', '46e42583768e73b0637e61cdec653af3', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (15, null, 'pwpw1218@gmail.com', null, null, 'ad', '2d7978a63e822555e3c493508ea8df52c16c1652', '13434343434', null, 'admincd', '3c3193e269b0f7a4307d4268be8d2ea2', null);
+INSERT INTO crm.sys_user (user_id, create_time, email, img_url, last_login_time, nick_name, password, phone_num, status, user_name, salt, update_time) VALUES (16, '2018-07-04 14:14:18', 'pwpw12181@gmail.com', null, null, 'A24', 'c1583800bc68677ab64ee46924101197eb2680bc', '13434343434', '2', 'adminSD', '7116768f00fc27fa0ab7b50a68aca44c', '2018-07-04 14:14:18');
