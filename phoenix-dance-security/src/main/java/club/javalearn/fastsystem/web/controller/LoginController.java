@@ -40,10 +40,6 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-
-    @Autowired
-    private PermissionService permissionService;
-
     /**
      * 进入登录页面
      * @return ModelAndView
@@ -93,7 +89,6 @@ public class LoginController {
             User user = (User) SecurityUtils.getSubject().getPrincipal();
 
             session.setAttribute("user", user);
-            session.setAttribute("menus",permissionService.getList(user.getUserId()));
 
             userService.updateLastLoginTime(user);
 

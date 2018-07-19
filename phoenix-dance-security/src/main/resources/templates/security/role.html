@@ -80,6 +80,49 @@
         <div th:replace="commons/footer :: footer"></div>
     </div>
 </section>
+<div style="display: none" id="roleForm">
+    <div style="overflow: auto;">
+        <form class="form-horizontal" id="infoForm">
+            <div class="modal-body" style="width: 100%;overflow-y:auto;">
+                <input type="hidden" id="roleId" name="roleId" value="">
+                <div class="form-group">
+                    <span class="col-sm-3 control-label">角色编码</span>
+                    <div class="col-sm-8">
+                        <input placeholder="" disabled name="roleCode" id="roleCode" value="" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3 control-label">角色名称</span>
+                    <div class="col-sm-8">
+                        <input placeholder="" name="roleName" id="roleName" value="" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3 control-label">备注</span>
+                    <div class="col-sm-8">
+                        <input placeholder="" name="remark" id="remark" value="" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3 control-label">状态</span>
+                    <div class="col-sm-8">
+                        <select id="status" name="status" class="form-control form-control-select">
+                            <option value="-1">全部</option>
+                            <option value="0">未启用</option>
+                            <option value="1" checked>启用</option>
+                            <option value="2">删除</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 选择菜单 -->
+<div id="menuLayer" style="display: none;padding:10px;">
+    <ul id="menuTree" class="ztree"></ul>
+</div>
 <div th:replace="commons/onload_js :: onloadJS"></div>
 <script th:src="@{/js/security/role.js}" src="js/security/role.js"></script>
 </body>

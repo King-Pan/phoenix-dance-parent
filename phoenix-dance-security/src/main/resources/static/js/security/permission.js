@@ -49,7 +49,7 @@ function getMenu() {
         var node = ztree.getNodeByParam("permissionId", '1');
         if (node) {
             ztree.selectNode(node);
-           //permission.parentName = node.permissionName;
+            //permission.parentName = node.permissionName;
         }
     })
 }
@@ -159,7 +159,7 @@ function add(flag, permissionId) {
             type: 'get',
             url: $basicPathVal + "permission/" + row.id,
             dataType: 'json',
-            success:function (data) {
+            success: function (data) {
                 console.log(data);
                 if (data.status === 200) {
                     //row = data.data;

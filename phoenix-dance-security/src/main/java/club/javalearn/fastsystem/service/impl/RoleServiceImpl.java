@@ -2,8 +2,10 @@ package club.javalearn.fastsystem.service.impl;
 
 import club.javalearn.fastsystem.common.BootstrapMessage;
 import club.javalearn.fastsystem.common.Message;
+import club.javalearn.fastsystem.model.Permission;
 import club.javalearn.fastsystem.model.Role;
 import club.javalearn.fastsystem.parameter.RoleInfo;
+import club.javalearn.fastsystem.repository.PermissionRepository;
 import club.javalearn.fastsystem.repository.RoleRepository;
 import club.javalearn.fastsystem.service.RoleService;
 import club.javalearn.fastsystem.utils.Constants;
@@ -19,9 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,6 +37,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+
+    @Autowired
+    private PermissionRepository permissionRepository;
 
     @Override
     public Message<Role> getPageList(RoleInfo roleInfo, Pageable pageable) {
@@ -101,6 +105,7 @@ public class RoleServiceImpl implements RoleService {
             r.setRoleCode(role.getRoleCode());
             r.setRoleName(role.getRoleName());
             r.setUpdateTime(new Date());
+            r.setStatus(role.getStatus());
             result = roleRepository.save(r);
         }else{
             role.setCreateTime(new Date());
@@ -133,5 +138,14 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void modifyStatus(Long roleId, String status) {
         roleRepository.modifyStatus(roleId,status);
+    }
+
+    @Override
+    public void rolePermission(Long roleId, Long[] permissionIds) {
+        Role role = roleRepository.getOne(roleId);
+        Set<Permission> permissionSet = role.getPermissions();
+        List<Permission> permissions = permissionRepository.findAllById(Arrays.asList(permissionIds));
+        permissionSet.addAll(permissions);
+        roleRepository.save(role);
     }
 }

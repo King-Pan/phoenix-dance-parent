@@ -4,7 +4,9 @@ import club.javalearn.fastsystem.model.Permission;
 import club.javalearn.fastsystem.model.Role;
 import club.javalearn.fastsystem.model.User;
 import club.javalearn.fastsystem.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -25,6 +27,7 @@ import java.util.Set;
  * Time: 下午5:40
  * Description: No Description
  */
+@Slf4j
 public class DefaultAuthorizingRealm extends AuthorizingRealm {
 
 
@@ -66,7 +69,12 @@ public class DefaultAuthorizingRealm extends AuthorizingRealm {
                 Set<Permission> permissionList = role.getPermissions();
                 if (CollectionUtils.isNotEmpty(permissionList)) {
                     for (Permission permission : permissionList) {
-                        permissions.add(permission.getExpression());
+                        if(StringUtils.isNoneBlank(permission.getExpression())){
+                            permissions.add(permission.getExpression());
+                        }else {
+                            log.error("{} 未配置 expression 属性",permission.getPermissionName());
+                        }
+
                     }
                 }
             }

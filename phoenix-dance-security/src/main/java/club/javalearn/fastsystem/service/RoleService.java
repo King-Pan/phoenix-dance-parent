@@ -57,4 +57,11 @@ public interface RoleService {
      * @param status 状态
      */
     void modifyStatus(Long roleId,String status);
+
+    /**
+     * 配置角色权限
+     * @param roleId 角色ID
+     * @param permissionIds 权限ID
+     */
+    void rolePermission(Long roleId,Long[] permissionIds);
 }

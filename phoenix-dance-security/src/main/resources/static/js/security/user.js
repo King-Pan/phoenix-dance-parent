@@ -171,10 +171,14 @@ function batchDel(){
 function actionFormatter(value, row, index) {
     var id = row.userId;
     var result = "";
-    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"openAddOrModifyDialog(true)\" title='修改'><span class='glyphicon glyphicon-edit'></span></a>";
-    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"delInfo('" + id + "')\" title='删除'><span class='glyphicon glyphicon-trash'></span></a>";
-    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"modifyRole('" + id + "')\" title='编辑用户角色'><span class='glyphicon glyphicon-user'></span></a>";
-    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"showUserGroup('" + id + "')\" title='编辑用户组'><span class='glyphicon glyphicon-user'></span><span class='glyphicon glyphicon-user'></span></a>";
+    var reg = new RegExp( '#id#' , "g" )
+
+    result = $("#actionFormatter").html();
+    // result += "<a href='javascript:;' shiro:hasPermission='user:add22' class='btn btn-sm btn-info size-S' onclick=\"openAddOrModifyDialog(true)\" title='修改'><span class='glyphicon glyphicon-edit'></span></a>";
+    // result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"delInfo('" + id + "')\" title='删除'><span class='glyphicon glyphicon-trash'></span></a>";
+    // result += "<a href='javascript:;'  class='btn btn-sm btn-info size-S' onclick=\"modifyRole('" + id + "')\" title='编辑用户角色'><span class='glyphicon glyphicon-user'></span></a>";
+    // result = result.replaceAll('${id}}',id);
+    result = result.replace( reg , id );
     return result;
 }
 

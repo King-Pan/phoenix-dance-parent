@@ -170,6 +170,25 @@ public class RoleController {
     }
 
     @ApiOperation(
+            value = "配置角色权限", notes = "配置角色权限"
+    )
+    @ApiImplicitParam(name = "permissionIds", value = "权限ID", dataType = "Long[]", paramType = "query")
+    @PostMapping("role/{roleId}")
+    @SysLog(module = "角色模块", operation = "配置角色权限")
+    public ServerResponse rolePermission(@PathVariable("roleId")Long roleId,@RequestParam("permissionIds[]") Long[] permissionIds) {
+        log.info("需要配置的角色权限: " + Arrays.toString(permissionIds));
+        ServerResponse serverResponse;
+        try {
+            roleService.rolePermission(roleId,permissionIds);
+            serverResponse = ServerResponse.createBySuccessMessage("配置角色权限成功");
+        } catch (Exception e) {
+            log.error("配置角色权限失败\n", e);
+            serverResponse = ServerResponse.createByErrorMessage("配置角色权限失败\n " + e.getMessage());
+        }
+        return serverResponse;
+    }
+
+    @ApiOperation(
             value = "修改状态", notes = "修改状态"
     )
     @ApiImplicitParams({

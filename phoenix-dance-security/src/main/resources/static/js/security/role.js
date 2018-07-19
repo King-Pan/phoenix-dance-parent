@@ -169,40 +169,11 @@ function actionFormatter(value, row, index) {
     var result = "";
     result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"openAddOrModifyDialog(true," + id + ")\" title='修改'><span class='glyphicon glyphicon-edit'></span></a>";
     result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"delInfo('" + id + "')\" title='删除'><span class='glyphicon glyphicon-trash'></span></a>";
-    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"updateStatus('0','" + id + "')\" title='禁用'><span class='glyphicon glyphicon-lock'></span></span></a>";
-    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"updateStatus('1','" + id + "')\" title='启用'><span class='glyphicon glyphicon-ok-circle'></span></a>";
-    //result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"updateStatus('1','" + id + "')\" title='启用'><i class='fa fa-user fa-fw'></i></a>";
-
+    result += "<a href='javascript:;' class='btn btn-sm btn-info size-S' onclick=\"giveSecurity('" + id + "')\" title='授权'><span class='glyphicon glyphicon-lock'></span></span></a>";
     return result;
 }
 
 
-function updateStatus(status, roleId) {
-    var postData = {};
-    postData.status = status;
-    postData.roleId = roleId;
-    layer.confirm('是否确定要修改状态?', {
-        btn: ['是', '否'] //按钮
-    }, function () {
-        $.ajax({
-            url: $basicPathVal + "role/" + roleId + "/" + status,
-            type: 'post',
-            dataType: 'json',
-            data: postData,
-            success: function (data) {
-                layer.alert(data.msg, {icon: 6});
-                if (data.status === 200) {
-                    $("#roleTable").bootstrapTable('refresh');
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        })
-    }, function () {
-
-    });
-}
 
 function delInfo(roleId) {
     layer.confirm('是否确定要删除该数据？', {
@@ -232,30 +203,6 @@ function delInfo(roleId) {
 }
 
 function openAddOrModifyDialog(flag, roleId) {
-
-
-    var divStr = '<div style="overflow: auto;">';
-    divStr += '<form class="form-horizontal" id="infoForm" th:action="@{/user/}" method="post">';
-    divStr += '<div class="modal-body" style="width: 100%;overflow-y:auto;">';
-    divStr += '<input type="hidden" id="roleId" name="roleId" value="">';
-    //角色编码
-    divStr += '<div class="form-group">';
-    divStr += '<span class="col-sm-3 control-label">角色编码</span>';
-    divStr += '<div class="col-sm-8"><input placeholder="" disabled name="roleCode" id="roleCode" value="" class="form-control" type="text"></div>';
-    divStr += '</div>';
-    //角色名称
-    divStr += '<div class="form-group">';
-    divStr += '<span class="col-sm-3 control-label">角色名称</span>';
-    divStr += '<div class="col-sm-8"><input placeholder="" name="roleName" id="roleName" value="" class="form-control" type="text"></div>';
-    divStr += '</div>';
-    //备注
-    divStr += '<div class="form-group">';
-    divStr += '<span class="col-sm-3 control-label">备注</span>';
-    divStr += '<div class="col-sm-8"><input placeholder="" name="remark" id="remark" value="" class="form-control" type="text"></div>';
-    divStr += '</div>';
-
-    divStr += '</div></div>';
-
     var row;
     if (flag) {
         if (roleId) {
@@ -272,8 +219,8 @@ function openAddOrModifyDialog(flag, roleId) {
     layer.open({
         type: 1,
         skin: 'layui-layer-rim', //加上边框
-        area: ['450px', '320px'], //宽高
-        content: divStr,
+        area: ['450px', '330px'], //宽高
+        content: $("#roleForm"),
         btn: ['取消', '确定'],
         btn1: function (index) {
             layer.close(index);
@@ -284,9 +231,9 @@ function openAddOrModifyDialog(flag, roleId) {
                 $("#roleCode").removeAttr("disabled");
                 var postData = $("#infoForm").serializeJson();//表单序列化
                 $("#roleCode").attr("disabled", "disabled");
-                if (postData.userId) {
+                if (postData.roleId) {
                     console.log(postData);
-                    console.log(postData.userId);
+                    console.log(postData.roleId);
                     postData._method = 'PUT';
                 }
                 $.ajax({
@@ -310,12 +257,13 @@ function openAddOrModifyDialog(flag, roleId) {
             }
         }
     });
-    $("#status").select2();
     if (flag) {
         $('#infoForm').setForm(row);
+        //$("#status").val(row.status).trigger("change");
     } else {
         $("#roleCode").removeAttr("disabled");
     }
+    $("#status").select2();
     validatorUser();
 }
 
@@ -397,8 +345,107 @@ function doQuery() {
     $("#roleTable").bootstrapTable('refresh');
 }
 
-$(document).ready(function () {
 
-});
+
+function giveSecurity(roleId) {
+    getMenu();
+    resourceTree(roleId);
+    console.log(roleId);
+
+}
+
+function getMenu() {
+    //加载菜单树
+    $.get($basicPathVal + "permission/select", function (r) {
+        ztree = $.fn.zTree.init($("#menuTree"), setting, r.data);
+        var node = ztree.getNodeByParam("permissionId", '1');
+        if (node) {
+            ztree.selectNode(node);
+            //permission.parentName = node.permissionName;
+        }
+    })
+}
+
+
+function resourceTree(roleId) {
+    var index = layer.open({
+        type: 1,
+        offset: '50px',
+        skin: 'layui-layer-molv',
+        title: "选择菜单",
+        area: ['300px', '450px'],
+        shade: 0,
+        shadeClose: false,
+        content: jQuery("#menuLayer"),
+        btn: ['确定', '取消'],
+        btn1: function (index) {
+            var nodes= ztree.getCheckedNodes();
+            console.log(nodes);
+            var permissionIds = [];
+            nodes.forEach(function (item) {
+                permissionIds.push(item.permissionId);
+            });
+            $.ajax({
+                type: 'post',
+                url: $basicPathVal + "role/"+roleId,
+                data: {permissionIds: permissionIds},
+                success: function (data) {
+                    layer.alert(data.msg, {icon: 6});
+                    if (data.status === 200) {
+                        layer.close(index);
+                    }
+                }
+
+            });
+        }
+    });
+}
+
+
+var ztree;
+
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "permissionId",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            name: "permissionName",
+            url: "nourl",
+            check: {
+                chkboxType: { "Y" : "ps", "N" : "ps" }
+            }
+        }
+    },
+    check: {
+        chkboxType: { "Y" : "ps", "N" : "ps" },
+        chkStyle: "checkbox",
+        enable: true
+    },
+    usericon:{
+        // 折叠icon
+        OPEN: "open fa ftopen fa-folder-open", // 打开文件图标
+        CLOSE: "close fa ftclose fa-folder",   // 折叠文件图标
+        OPENDK:'open icon-folder ace-icon tree-minus',  // 打开状态图标
+        CLOSEZD:'close icon-folder ace-icon tree-plus', // 折叠状态图标
+        DOCU: "docu",
+        // 子节点图标
+        CHILDRENNODE: "fa-book",
+        // 复选框图标
+        UNFACHECK: "fa fa-check",
+        FACHECKED: "fa fa-times",
+        // 编辑图标
+        EDIT: "fa-pencil-square-o",
+        // 移除图标
+        REMOVE: "fa-eraser",
+        // 增加节点图标
+        ADDNODE: "fa-plus-square",
+        DOCU: "docu"
+    }
+
+};
 
 
