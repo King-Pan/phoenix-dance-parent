@@ -21,7 +21,7 @@ public class DataDictController {
 
     @RequestMapping(value = "dataDict",method = RequestMethod.GET)
     public ModelAndView dataDictPage(){
-        return new ModelAndView("dataDict");
+        return new ModelAndView("system/dataDict");
     }
 
 }
