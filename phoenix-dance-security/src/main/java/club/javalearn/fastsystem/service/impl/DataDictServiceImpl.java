@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class DataDictServiceImpl implements DataDictService {
+
 
     @Autowired
     private DataDictRepository dataDictRepository;
@@ -77,6 +79,13 @@ public class DataDictServiceImpl implements DataDictService {
     }
 
     @Override
+    public List<DataDict> findAll() {
+        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "type"));
+        sort.and(new Sort(Sort.Direction.ASC, "orderNum"));
+        return dataDictRepository.findAll(sort);
+    }
+
+    @Override
     public DataDict save(DataDict dataDict) {
         return dataDictRepository.save(dataDict);
     }
@@ -84,5 +93,24 @@ public class DataDictServiceImpl implements DataDictService {
     @Override
     public void deleteDataDict(Long id) {
         dataDictRepository.deleteById(id);
+    }
+
+    @Override
+    public List<DataDict> findAllType() {
+        List<Object[]> list = dataDictRepository.findAllType();
+        List<DataDict> dataDictList = new ArrayList<>();
+        DataDict dataDict;
+        for (Object[] l:list){
+            System.out.println(Arrays.toString(l));
+            dataDict = new DataDict();
+            if(l[0]!=null && StringUtils.isNoneBlank(l[0].toString())){
+                dataDict.setType(l[0].toString());
+            }
+            if(l[1]!=null && StringUtils.isNoneBlank(l[1].toString())){
+                dataDict.setDictValue(l[1].toString());
+            }
+            dataDictList.add(dataDict);
+        }
+        return dataDictList;
     }
 }

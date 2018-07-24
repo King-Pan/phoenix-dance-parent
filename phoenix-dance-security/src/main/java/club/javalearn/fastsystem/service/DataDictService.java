@@ -2,9 +2,11 @@ package club.javalearn.fastsystem.service;
 
 import club.javalearn.fastsystem.common.Message;
 import club.javalearn.fastsystem.model.DataDict;
+import com.sun.org.apache.bcel.internal.generic.DADD;
 import org.springframework.data.domain.Pageable;
 
 import javax.xml.crypto.Data;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +26,9 @@ public interface DataDictService {
      */
     Message<DataDict> getPageList(final DataDict dataDict, Pageable pageable);
 
+
+    List<DataDict> findAll();
+
     /**
      * 新增或者修改分类信息
      * @param dataDict 分类信息
@@ -36,4 +41,7 @@ public interface DataDictService {
      * @param id 分类ID
      */
     void deleteDataDict(Long id);
+
+
+    List<DataDict> findAllType();
 }

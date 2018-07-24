@@ -1,6 +1,8 @@
 package club.javalearn.fastsystem.web.controller;
 
+import club.javalearn.fastsystem.service.DataDictService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +21,21 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/")
 public class DataDictController {
 
+    @Autowired
+    private DataDictService dataDictService;
+
     @RequestMapping(value = "dataDict",method = RequestMethod.GET)
     public ModelAndView dataDictPage(){
-        return new ModelAndView("system/dataDict");
+        ModelAndView view = new ModelAndView("system/dataDict");
+        System.out.println(dataDictService.findAllType());
+        view.addObject("dataDictList",dataDictService.findAllType());
+        return view;
+    }
+
+
+    @RequestMapping(value = "dataDicts/",method = RequestMethod.GET)
+    public Object findAll(){
+        return dataDictService.findAll();
     }
 
 }
