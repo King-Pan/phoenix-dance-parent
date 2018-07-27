@@ -1,11 +1,11 @@
 package club.javalearn.fastsystem.web.controller;
 
+import club.javalearn.fastsystem.common.ServerResponse;
+import club.javalearn.fastsystem.model.DataDict;
 import club.javalearn.fastsystem.service.DataDictService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -24,18 +24,31 @@ public class DataDictController {
     @Autowired
     private DataDictService dataDictService;
 
-    @RequestMapping(value = "dataDict",method = RequestMethod.GET)
-    public ModelAndView dataDictPage(){
+    @RequestMapping(value = "dataDict", method = RequestMethod.GET)
+    public ModelAndView dataDictPage() {
         ModelAndView view = new ModelAndView("system/dataDict");
         System.out.println(dataDictService.findAllType());
-        view.addObject("dataDictList",dataDictService.findAllType());
+        view.addObject("dataDictList", dataDictService.findAllType());
         return view;
     }
 
 
-    @RequestMapping(value = "dataDicts/",method = RequestMethod.GET)
-    public Object findAll(){
+    @RequestMapping(value = "dataDicts/", method = RequestMethod.GET)
+    public Object findAll() {
         return dataDictService.findAll();
+    }
+
+
+    @GetMapping("dataDict/{id}")
+    public Object findById(@PathVariable("id") Long id) {
+        ServerResponse<DataDict> serverResponse;
+        try {
+            serverResponse = ServerResponse.createBySuccess("获取字典成功", dataDictService.findById(id));
+        } catch (Exception e) {
+            log.error("获取字典失败\n", e);
+            serverResponse = ServerResponse.createByErrorMessage("获取字典失败\n " + e.getMessage());
+        }
+        return serverResponse;
     }
 
 }

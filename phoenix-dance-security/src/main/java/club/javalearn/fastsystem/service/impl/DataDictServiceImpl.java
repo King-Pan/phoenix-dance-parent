@@ -80,9 +80,15 @@ public class DataDictServiceImpl implements DataDictService {
 
     @Override
     public List<DataDict> findAll() {
-        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "type"));
-        sort.and(new Sort(Sort.Direction.ASC, "orderNum"));
-        return dataDictRepository.findAll(sort);
+        List<Sort.Order> orders=new ArrayList<>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, "type"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "orderNum"));
+        return dataDictRepository.findAll(new Sort(orders));
+    }
+
+    @Override
+    public DataDict findById(Long id) {
+        return dataDictRepository.getById(id);
     }
 
     @Override
@@ -108,6 +114,9 @@ public class DataDictServiceImpl implements DataDictService {
             }
             if(l[1]!=null && StringUtils.isNoneBlank(l[1].toString())){
                 dataDict.setDictValue(l[1].toString());
+            }
+            if(l[2]!=null && StringUtils.isNoneBlank(l[2].toString())){
+                dataDict.setId(Long.parseLong(l[2].toString()));
             }
             dataDictList.add(dataDict);
         }

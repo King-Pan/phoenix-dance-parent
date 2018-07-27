@@ -30,6 +30,13 @@ public interface DataDictService {
     List<DataDict> findAll();
 
     /**
+     * 通过ID查询字典信息
+     * @param id 字典ID
+     * @return 字典信息
+     */
+    DataDict findById(Long id);
+
+    /**
      * 新增或者修改分类信息
      * @param dataDict 分类信息
      * @return 分类信息

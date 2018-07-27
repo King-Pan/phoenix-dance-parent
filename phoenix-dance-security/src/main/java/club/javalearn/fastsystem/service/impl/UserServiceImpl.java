@@ -111,10 +111,11 @@ public class UserServiceImpl implements UserService {
     public Message<User> getPageList(UserInfo userInfo, Pageable pageable) {
         BootstrapMessage<User> message = new BootstrapMessage<>();
         final User user = userInfo.convertUser();
-        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "updateTime"));
-        sort.and(new Sort(Sort.Direction.ASC, "status"));
-        sort.and(new Sort(Sort.Direction.ASC, "userId"));
-        PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        List<Sort.Order> orders = new ArrayList<>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, "updateTime"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "status"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "userId"));
+        PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(orders));
 
         Page<User> userPage = userRepository.findAll(new Specification<User>(){
             @Override

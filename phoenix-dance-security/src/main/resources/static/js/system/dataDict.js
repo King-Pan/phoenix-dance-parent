@@ -1,35 +1,23 @@
-function validator() {
-    $('#infoForm').bootstrapValidator({
-        message: 'This value is not valid',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            permissionName: {
-                validators: {
-                    notEmpty: {
-                        message: '资源名称不能为空'
-                    }
-                }
-            },
-            parentName: {
-                validators: {
-                    notEmpty: {
-                        message: '上级资源不能为空'
-                    }
-                }
-            },
-            orderNum: {
-                validators: {
-                    notEmpty: {
-                        message: '排序号不能为空'
-                    }
-                }
-            }
+function validater() {
+    var postData = $("#infoForm").serializeJson();//表单序列化
+    var dType = $("#dType").val();
+    var type = $("#type").val();
+    var dictCode = $("#dictCode").val();
+    var dictValue = $("#dictValue").val();
+
+    if (postData.id) {
+        //修改
+    } else {
+        //新增
+        if (postData.dType === '0') {
+            //根节点
+
+        }else{
+            //子节点
+
         }
-    });
+
+    }
 }
 
 function refresh() {
@@ -104,15 +92,16 @@ function add(flag, permissionId) {
     layer.open({
         type: 1,
         skin: 'layui-layer-rim', //加上边框
-        area: ['650px', '520px'], //宽高
-        content: jQuery("#permissionForm"),
+        area: ['450px', '360px'], //宽高
+        content: jQuery("#dataDictForm"),
+        title: '新增数据字典',
         btn: ['取消', '确定'],
         btn1: function (index) {
             layer.close(index);
         },
         btn2: function () {
-            $("#infoForm").bootstrapValidator('validate');//提交验证
-            if ($("#infoForm").data('bootstrapValidator').isValid()) {//获取验证结果，如果成功，执行下面代码
+
+            if (validater()) {//获取验证结果，如果成功，执行下面代码
                 $("#parentName").removeAttr("disabled");
                 var postData = $("#infoForm").serializeJson();//表单序列化
                 $("#parentName").attr("disabled", "disabled");
@@ -142,28 +131,25 @@ function add(flag, permissionId) {
             }
         }
     });
-    $("#status").select2();
+    $("#type").select2();
     if (flag) {
         $.ajax({
             type: 'get',
-            url: $basicPathVal + "permission/" + row.id,
+            url: $basicPathVal + "dataDict/" + row.id,
             dataType: 'json',
             success: function (data) {
                 console.log(data);
                 if (data.status === 200) {
                     //row = data.data;
                     $('#infoForm').setForm(data.data);
+                    $("#dType").val(data.parentId?1:0);
+                    $("#type").val(data.type);
                 } else {
                     layer.alert(data.msg, {icon: 6});
                 }
             }
         });
-        console.log(row);
-        $('#infoForm').setForm(row);
-    } else {
-        //$("#roleCode").removeAttr("disabled");
     }
-    validator();
 }
 
 function resourceTree() {
@@ -242,12 +228,12 @@ var Menu = {
  */
 Menu.initColumn = function () {
     var columns = [
-        {field: 'selectItem', checkbox: true},
+        {field: 'selectItem', radio: true},
         {title: 'ID', field: 'id', visible: false, align: 'center', valign: 'middle', width: '60px'},
         {title: '字典编码', field: 'dictCode', align: 'center', valign: 'middle', sortable: true, width: '120px'},
-        {title: '字典值',field: 'dictValue',align: 'center',valign: 'middle',sortable: true,width: '100px'},
-        {title: '类型',field: 'type',align: 'center',valign: 'middle',sortable: true,width: '60px'},
+        {title: '字典值', field: 'dictValue', align: 'center', valign: 'middle', sortable: true, width: '100px'},
+        {title: '类型', field: 'type', align: 'center', valign: 'middle', sortable: true, width: '60px'},
         {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '60px'}
-        ];
+    ];
     return columns;
 };
