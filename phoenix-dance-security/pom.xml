@@ -119,11 +119,11 @@
             <artifactId>thymeleaf-extras-shiro</artifactId>
         </dependency>
 
-
-
-
-
-
+        <!--验证码-->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+        </dependency>
 
 
         <!--webjars begin-->
